@@ -90,10 +90,18 @@
                                                 </a>
                                                 <div class="product-action-icon-link">
                                                     <ul>
-                                                        @auth()
-                                                            <li><a href="wishlist.html"><i class="icon-heart"></i></a>
-                                                            </li>
-                                                        @endauth
+                                                        <form action="{{route('shop.wishlist.store', $part->id)}}" method="post">
+                                                            @csrf
+                                                            <button type="submit">
+                                                                @auth()
+                                                                    @if(auth()->user()->GetLikedParts->contains($part->id))
+                                                                        <li><a><i class="fas fa-heart"></i></a></li>
+                                                                    @else
+                                                                        <li><a><i class="far fa-heart"></i></a></li>
+                                                                    @endif
+                                                                @endauth
+                                                            </button>
+                                                        </form>
                                                         @guest()
                                                             <li><a href="{{route('login')}}"><i class="icon-heart"></i></a>
                                                             </li>
@@ -448,7 +456,7 @@
                                         <!-- Start  Product Details Meta Area-->
                                         <div class="product-details-meta mb-20">
                                             <ul>
-                                                <form action="{{route('wishlist.store', $part->id)}}" method="post">
+                                                <form action="{{route('shop.wishlist.store', $part->id)}}" method="post">
                                                     @csrf
                                                     <button type="submit" style="background:transparent; border:0">
                                                         @auth()
@@ -466,7 +474,7 @@
                                                 </form>
                                                 @guest()
                                                     <li><a href="{{route('login')}}"><i class="icon-heart"></i> Додати
-                                                            до обраного</a>
+                                                            до обраного (зарееструватися)</a>
                                                     </li>
                                                 @endguest
                                                 <li><a href="#" data-toggle="modal" data-target="#modalQuickview"><i

@@ -6,6 +6,7 @@ Route::post('/admin/search_parts', \App\Http\Controllers\Search\SearchController
 
 Route::group(['namespace' => 'App\Http\Controllers\Shop'],
     function () {
+        Route::post('/{part}', Other\StoreController::class)->name('shop.wishlist.store');
         Route::get('/', Home\IndexController::class)->name('shop.home.index');
         Route::get('/contact', Other\ContactsController::class)->name('shop.contacts');
         Route::get('/about', Other\AboutController::class)->name('shop.about');
