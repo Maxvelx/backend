@@ -34,7 +34,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Список категорій</h3>
+                    <h3 class="card-title">Список запчастин</h3>
 
                     <div class="card-tools">
                         <div class="input-group input-group-sm" style="width: 150px;">
@@ -59,6 +59,7 @@
                             <th>Номер ориг.</th>
                             <th>Ціна</th>
                             <th>Роздріб</th>
+                            <th>Ціна FIX</th>
                             <th>Назва</th>
                             <th>Наявність</th>
                         </tr>
@@ -84,10 +85,11 @@
                                                class="bg-transparent border-0 text-light">
                                     </form>
                                 </td>
-                                <td>{{$part->price_1}}</td>
-                                <td>{{isset($coef) ? $part->price_1*$coef : '--'}}</td>
+                                <td>{{$part->getPrice($part)['price_1'].'грн'}}</td>
+                                <td>{{$part->getPrice($part)['price_1']*$coef . 'грн'}}</td>
+                                <td>{{isset($part->price_2) ? $part->getPrice($part)['price_2'].'грн': '--'}}</td>
                                 <td>{{$part->name_parts}}</td>
-                            @if($part->quantity > 0)
+                                @if($part->quantity > 0)
                                     <td class="text-success">У наявності</td>
                                 @elseif($part->quantity <= 0)
                                     <td class="text-orange">Під замовлення</td>

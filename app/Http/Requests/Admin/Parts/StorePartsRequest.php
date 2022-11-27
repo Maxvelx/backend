@@ -24,16 +24,17 @@ class StorePartsRequest extends FormRequest
     public function rules()
     {
         return [
-            'brands[]'    => 'array|nullable',
-            'brands.*'    => 'nullable|exists:brand_autos,id',
-            'brand_part'  => 'string|nullable',
-            'num_part'    => 'string|nullable',
-            'num_oem'     => 'string|nullable',
-            'name_parts'  => 'string|nullable',
-            'quantity'    => 'integer|nullable',
-            'price_1'     => 'integer|nullable',
-            'price_2'     => 'integer|nullable',
-            'category_id' => 'integer',
+            'brands[]'       => 'array|nullable',
+            'brands.*'       => 'nullable|exists:brand_autos,id',
+            'brand_part'     => 'string|nullable',
+            'num_part'       => 'string|nullable',
+            'num_oem'        => 'string|nullable',
+            'name_parts'     => 'string|nullable',
+            'quantity'       => 'integer|nullable',
+            'price_1'        => 'integer|nullable',
+            'price_2'        => 'integer|nullable',
+            'price_currency' => 'integer|required',
+            'category_id'    => 'integer|required',
         ];
     }
 }

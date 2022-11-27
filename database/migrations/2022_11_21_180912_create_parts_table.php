@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('quantity')->nullable();
             $table->integer('price_1')->nullable();
             $table->integer('price_2')->nullable();
+            $table->integer('price_currency')->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
             $table->timestamps();
 

@@ -27,10 +27,11 @@ class PartsController extends BaseController
      */
     public function create()
     {
+        $currency = Parts::getCurrencyStatus();
         $brandAutos = BrandAuto::all();
         $categories = Category::tree();
         $delimiter = '';
-        return view('admin.parts.create', compact('delimiter', 'categories', 'brandAutos'));
+        return view('admin.parts.create', compact('delimiter', 'categories', 'brandAutos', 'currency'));
     }
 
     /**
@@ -62,10 +63,11 @@ class PartsController extends BaseController
      */
     public function edit(Parts $part)
     {
+        $currency = Parts::getCurrencyStatus();
         $brandAutos = BrandAuto::all();
         $categories = Category::tree();
         $delimiter = '';
-        return view('admin.parts.edit', compact('part','delimiter', 'categories','brandAutos'));
+        return view('admin.parts.edit', compact('part','delimiter', 'categories','brandAutos', 'currency'));
     }
 
     /**

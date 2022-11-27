@@ -33,6 +33,11 @@ class User extends Authenticatable
         return self::getRole()[$this->roleId];
     }
 
+    public function GetLikedParts()
+    {
+        return $this->belongsToMany(Parts::class, 'parts_users', 'user_id', 'part_id');
+    }
+
     /**
      * The attributes that are mass assignable.
      *

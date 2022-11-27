@@ -62,6 +62,17 @@
                     @enderror
                 </div>
                 <div class="form-group input-group-lg">
+                    <label for="price_currency">Вибір валюти</label>
+                    <select id="price_currency" name="price_currency" class="custom-select">
+                        @foreach($currency as $id => $currency_id)
+                            <option {{$part->price_currency == $id ? 'selected' : ''}} value="{{$id}}">{{$currency_id}}</option>
+                        @endforeach
+                    </select>
+                    @error('price_currency')
+                    <div class="text-danger">{{$message}}</div>
+                    @enderror
+                </div>
+                <div class="form-group input-group-lg">
                     <label for="price_1">Ціна товару закупочна</label>
                     <input class="form-control" id="price_1" name="price_1" type="text"
                            placeholder="Ціна закупочна" value="{{$part->price_1 ?? old('price_1')}}">

@@ -60,6 +60,17 @@
                     @enderror
                 </div>
                 <div class="form-group input-group-lg">
+                    <label for="price_currency">Вибір валюти</label>
+                    <select id="price_currency" name="price_currency" class="custom-select">
+                        @foreach($currency as $id => $currency_id)
+                            <option value="{{$id}}">{{$currency_id}}</option>
+                        @endforeach
+                    </select>
+                    @error('price_currency')
+                    <div class="text-danger">{{$message}}</div>
+                    @enderror
+                </div>
+                <div class="form-group input-group-lg">
                     <label for="price_1">Ціна товару закупочна</label>
                     <input class="form-control" id="price_1" name="price_1" type="text"
                            placeholder="Ціна закупочна" value="{{old('price_1')}}">
@@ -68,9 +79,9 @@
                     @enderror
                 </div>
                 <div class="form-group input-group-lg">
-                    <label for="price_2">Ціна товару для продажу</label>
+                    <label for="price_2">Фіксована ціна, буде виведена приорітетно</label>
                     <input class="form-control" id="price_2" name="price_2" type="text"
-                           placeholder="Ціна товару для продажу" value="{{old('price_2')}}">
+                           placeholder="Ціна фікс, для знижок и т.і." value="{{old('price_2')}}">
                     @error('price_2')
                     <div class="text-danger">{{$message}}</div>
                     @enderror
