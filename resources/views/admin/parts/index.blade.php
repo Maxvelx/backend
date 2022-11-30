@@ -35,25 +35,13 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Список запчастин</h3>
-
-                    <div class="card-tools">
-                        <div class="input-group input-group-sm" style="width: 150px;">
-                            <input type="text" name="table_search" class="form-control float-right"
-                                   placeholder="Search">
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-default">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body table-responsive p-0">
-                    <table class="table table-hover text-nowrap">
+                    <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th>Взаемодія</th>
+                            <th colspan="2">Взаемодія</th>
                             <th>Номер зап.</th>
                             <th>Бренд</th>
                             <th>Номер ориг.</th>
@@ -67,9 +55,9 @@
                         <tbody>
                         @foreach($parts as $part)
                             <tr>
-                                <td class="row"><a href="{{route('parts.edit', $part->id)}}"><i
+                                <td><a href="{{route('parts.edit', $part->id)}}"><i
                                             aria-placeholder="Редагувати" class="text-success fas fa-edit"></i></a>
-                                    <form action="{{route('parts.destroy', $part->id)}}" method="post">
+                                </td><td><form action="{{route('parts.destroy', $part->id)}}" method="post">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-danger bg-transparent border-0"><i
@@ -88,7 +76,7 @@
                                 <td>{{$part->getPrice($part)['price_1'].'грн'}}</td>
                                 <td>{{$part->getPrice($part)['price_1']*$coef . 'грн'}}</td>
                                 <td>{{isset($part->price_2) ? $part->getPrice($part)['price_2'].'грн': '--'}}</td>
-                                <td>{{$part->name_parts}}</td>
+                                <td style="max-width: 200px; overflow: hidden; white-space: nowrap">{{$part->name_parts}}</td>
                                 @if($part->quantity > 0)
                                     <td class="text-success">У наявності</td>
                                 @elseif($part->quantity <= 0)

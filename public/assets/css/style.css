@@ -80,7 +80,7 @@
     line-clamp: 3;
 }
 
-.cuttedTextTable {
+.cuttedTextLine {
     display: block;
     width: 192.8px;
     overflow: hidden;

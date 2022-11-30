@@ -7,9 +7,10 @@ use App\Models\Parts;
 
 class StoreController extends Controller
 {
-    public function __invoke(Parts $part)
+    public function __invoke( Parts $part )
     {
-        auth()->user()->GetLikedParts()->toggle($part);
-        return redirect()->back();
+        auth ()->user ()->GetLikedParts ()->toggle ( $part );
+
+        return redirect ()->back ();
     }
 }

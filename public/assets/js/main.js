@@ -2,50 +2,50 @@
     "use strict";
 
     /*****************************
-    * Commons Variables
-    *****************************/
+     * Commons Variables
+     *****************************/
     var $window = $(window),
-    $body = $('body');
-    
+        $body = $('body');
+
     /****************************
-    * Sticky Menu
-    *****************************/
-    $(window).on('scroll',function() {    
+     * Sticky Menu
+     *****************************/
+    $(window).on('scroll',function() {
         var scroll = $(window).scrollTop();
         if (scroll < 100) {
-         $(".sticky-header").removeClass("sticky");
+            $(".sticky-header").removeClass("sticky");
         }else{
-         $(".sticky-header").addClass("sticky");
+            $(".sticky-header").addClass("sticky");
         }
     });
 
 
     /*****************************
-    * Off Canvas Function
-    *****************************/
+     * Off Canvas Function
+     *****************************/
     (function () {
         var $offCanvasToggle = $('.offcanvas-toggle'),
             $offCanvas = $('.offcanvas'),
             $offCanvasOverlay = $('.offcanvas-overlay'),
             $mobileMenuToggle = $('.mobile-menu-toggle');
-            $offCanvasToggle.on('click', function (e) {
-                e.preventDefault();
-                var $this = $(this),
-                    $target = $this.attr('href');
-                $body.addClass('offcanvas-open');
-                $($target).addClass('offcanvas-open');
-                $offCanvasOverlay.fadeIn();
-                if ($this.parent().hasClass('mobile-menu-toggle')) {
-                    $this.addClass('close');
-                }
-            });
-            $('.offcanvas-close, .offcanvas-overlay').on('click', function (e) {
-                e.preventDefault();
-                $body.removeClass('offcanvas-open');
-                $offCanvas.removeClass('offcanvas-open');
-                $offCanvasOverlay.fadeOut();
-                $mobileMenuToggle.find('a').removeClass('close');
-            });
+        $offCanvasToggle.on('click', function (e) {
+            e.preventDefault();
+            var $this = $(this),
+                $target = $this.attr('href');
+            $body.addClass('offcanvas-open');
+            $($target).addClass('offcanvas-open');
+            $offCanvasOverlay.fadeIn();
+            if ($this.parent().hasClass('mobile-menu-toggle')) {
+                $this.addClass('close');
+            }
+        });
+        $('.offcanvas-close, .offcanvas-overlay').on('click', function (e) {
+            e.preventDefault();
+            $body.removeClass('offcanvas-open');
+            $offCanvas.removeClass('offcanvas-open');
+            $offCanvasOverlay.fadeOut();
+            $mobileMenuToggle.find('a').removeClass('close');
+        });
     })();
 
 
@@ -161,9 +161,9 @@
         ]
     });
     /***********************************
-    * Gallery - Horizontal
-    ************************************/
-   $('.product-large-image-horaizontal').slick({
+     * Gallery - Horizontal
+     ************************************/
+    $('.product-large-image-horaizontal').slick({
         slidesToShow: 1,
         slidesToScroll: 1,
         arrows: false,
@@ -206,9 +206,9 @@
         ]
     });
     /***********************************
-    * Gallery - Vertical
-    ************************************/
-   $('.product-large-image-vertical').slick({
+     * Gallery - Vertical
+     ************************************/
+    $('.product-large-image-vertical').slick({
         slidesToShow: 1,
         slidesToScroll: 1,
         arrows: false,
@@ -252,15 +252,15 @@
         ]
     });
 
-    
+
     /********************************
-    *  Product Gallery - Image Zoom
-    **********************************/
+     *  Product Gallery - Image Zoom
+     **********************************/
     $('.zoom-image-hover').zoom();
 
     /***********************************
-    * Gallery - Single Slider
-    ************************************/
+     * Gallery - Single Slider
+     ************************************/
     $('.product-large-image-single-slider').slick({
         slidesToShow: 4,
         slidesToScroll: 1,
@@ -298,9 +298,9 @@
     });
 
     /***********************************
-    * Modal  Quick View Image
-    ************************************/
-   $('.modal-product-image-large').slick({
+     * Modal  Quick View Image
+     ************************************/
+    $('.modal-product-image-large').slick({
         slidesToShow: 1,
         slidesToScroll: 1,
         arrows: false,
@@ -321,9 +321,9 @@
     });
 
     /***********************************
-    * Blog - Slider
-    ************************************/
-   $('.blog-image-slider').slick({
+     * Blog - Slider
+     ************************************/
+    $('.blog-image-slider').slick({
         slidesToShow: 1,
         slidesToScroll: 1,
         focusOnSelect: true,
@@ -333,9 +333,9 @@
     });
 
     /***********************************
-    * Testimonial - Slider
-    ************************************/
-   $('.testimonial-slider').slick({
+     * Testimonial - Slider
+     ************************************/
+    $('.testimonial-slider').slick({
         slidesToShow: 1,
         slidesToScroll: 1,
         focusOnSelect: true,
@@ -357,23 +357,40 @@
         max: 500,
         values: [ 75, 300 ],
         slide: function( event, ui ) {
-          $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+            $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
         }
-      });
-      $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+    });
+    $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
         " - $" + $( "#slider-range" ).slider( "values", 1 ) );
 
 
     /************************************************
      * Video  Popup
      ***********************************************/
-    $('.video-play-btn').venobox(); 
+    $('.video-play-btn').venobox();
+
+    /************************************************
+     * Animate on Scroll
+     ***********************************************/
+    AOS.init({
+        // Settings that can be overridden on per-element basis, by `data-aos-*` attributes:
+        duration: 1000, // values from 0 to 3000, with step 50ms
+        once: true, // whether animation should happen only once - while scrolling down
+        easing: 'ease',
+    });
+    window.addEventListener('load', AOS.refresh);
+
+    /************************************************
+     * Hash Link Scroll To Top Prevent
+     ***********************************************/
+    $('a[href="#"]').on('click', (function(e) {
+        e.preventDefault ? e.preventDefault() : e.returnValue = false;
+    }));
 
     /************************************************
      * Scroll Top
      ***********************************************/
     $('body').materialScrollTop();
 
- 
-})(jQuery);
 
+})(jQuery);

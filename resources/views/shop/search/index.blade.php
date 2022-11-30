@@ -34,7 +34,7 @@
                                     </form>
                                 </td>
                                 <td>@include('shop.components.etc.price')</td>
-                                <td>{{$part->name_parts}}</td>
+                                <td style="max-width: 200px; overflow: hidden; white-space: nowrap">{{$part->name_parts}}</td>
                                 <td>21 день</td>
                                 @if($part->quantity > 0)
                                     <td class="text-green">У наявності</td>

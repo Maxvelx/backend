@@ -12,6 +12,6 @@
 @include('shop.components.layouts.mobile')
 @yield('content')
 @include('shop.components.layouts.footer')
-</body>
 @include('shop.components.layouts.asset.script')
+</body>
 </html>

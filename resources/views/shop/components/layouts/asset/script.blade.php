@@ -14,8 +14,8 @@
 <script src="assets/js/plugins/venobox.min.js"></script>
 
 <!-- Use the minified version files listed below for better performance and remove the files listed above -->
-<!-- <script src="assets/js/vendor.min.js"></script>
-<script src="assets/js/plugins.min.js"></script> -->
+{{--<script src="assets/js/vendor.min.js"></script>--}}
+<script src="assets/js/plugins.min.js"></script>
 
 <!-- Main JS -->
 <script src="assets/js/main.js"></script>

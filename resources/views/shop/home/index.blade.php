@@ -16,7 +16,7 @@
             <!-- Start Hero Slider Single -->
             <div class="hero-area-single">
                 <div class="hero-area-bg">
-                    <img class="hero-img" src="assets/images/slider_images/home_1/aments_home_1_slider_1.jpg" alt="">
+                    <img class="hero-img" src="{{Storage::url ('/image/slider-2.jpg')}}" alt="">
                 </div>
                 <div class="hero-content">
                     <div class="container">
@@ -25,7 +25,7 @@
                                 <h5>World Best Quality</h5>
                                 <h2>New Car Parts</h2>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiu</p>
-                                <a href="product-details-default.html" class="hero-button">Shopping Now</a>
+                                <a href="{{url ('category/4')}}" class="hero-button">Shopping Now</a>
                             </div>
                         </div>
                     </div>
@@ -34,16 +34,16 @@
             <!-- Start Hero Slider Single -->
             <div class="hero-area-single">
                 <div class="hero-area-bg">
-                    <img class="hero-img" src="assets/images/slider_images/home_1/aments_home_1_slider_2.jpg" alt="">
+                    <img class="hero-img" src="{{Storage::url ('/image/slider-1.webp')}}" alt="">
                 </div>
                 <div class="hero-content">
                     <div class="container">
                         <div class="row">
                             <div class="col-10 col-md-8 col-xl-6">
-                                <h5>World Best Quality</h5>
-                                <h2>New Car Parts</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiu</p>
-                                <a href="product-details-default.html" class="hero-button">Shopping Now</a>
+                                <h5>Боже який пікап</h5>
+                                <h2>Дуже класний</h2>
+                                <p>Купи на цей автомобіль запчастини перейшовши по посиланню знизу</p>
+                                <a href="{{url ('category/5')}}" class="hero-button">Купуй зараз!</a>
                             </div>
                         </div>
                     </div>
@@ -60,8 +60,8 @@
                 <div class="row">
                     <div
                         class="section-content d-flex justify-content-between align-items-md-center align-items-start flex-md-row flex-column">
-                        <h3 class="section-title">Нові надхоження</h3>
-                        <ul class="tablist nav product-tab-btn">
+                        <h3 class="section-title" data-aos="fade-right" data-aos-delay="0">Нові надхоження</h3>
+                        <ul class="tablist nav product-tab-btn" data-aos="fade-left" data-aos-delay="0">
                             <li><a class="nav-link active" data-toggle="tab" href="#car_and_drive">Нові надходження</a>
                             </li>
                             <li><a class="nav-link" data-toggle="tab" href="#motorcycle">Нові надходження оливи</a></li>
@@ -72,7 +72,7 @@
         </div> <!-- End Section Content -->
 
         <!-- Start Tab Wrapper -->
-        <div class="product-tab-wrapper">
+        <div class="product-tab-wrapper" data-aos="fade-up" data-aos-delay="100">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
@@ -90,27 +90,37 @@
                                                 </a>
                                                 <div class="product-action-icon-link">
                                                     <ul>
-                                                        <form action="{{route('shop.wishlist.store', $part->id)}}" method="post">
-                                                            @csrf
-                                                            <button type="submit">
-                                                                @auth()
-                                                                    @if(auth()->user()->GetLikedParts->contains($part->id))
-                                                                        <li><a><i class="fas fa-heart"></i></a></li>
-                                                                    @else
-                                                                        <li><a><i class="far fa-heart"></i></a></li>
-                                                                    @endif
-                                                                @endauth
-                                                            </button>
-                                                        </form>
-                                                        @guest()
-                                                            <li><a href="{{route('login')}}"><i class="icon-heart"></i></a>
-                                                            </li>
-                                                        @endguest
-                                                        <li><a href="#" data-toggle="modal"
-                                                               data-target="#modalQuickview{{$part->id}}"><i
-                                                                    class="icon-eye"></i></a></li>
-                                                        <li><a href="#" data-toggle="modal" data-target="#modalAddcart"><i
-                                                                    class="icon-shopping-cart"></i></a></li>
+                                                        <li>
+                                                            @auth()
+                                                                <form id="some"
+                                                                      action="{{route('shop.wishlist.store', $part->id)}}"
+                                                                      method="post">
+                                                                    @csrf
+                                                                    <a>
+                                                                        <button type="submit">
+
+                                                                            @if(auth()->user()->GetLikedParts->contains($part->id))
+                                                                                <i class="fas fa-heart"></i>
+                                                                            @else
+                                                                                <i class="far fa-heart"></i>
+                                                                            @endif
+
+                                                                        </button>
+                                                                    </a>
+                                                                </form>
+                                                            @endauth
+                                                        </li>
+                                                                @guest()
+                                                                    <li><a href="{{route('login')}}"><i
+                                                                                class="icon-heart"></i></a>
+                                                                    </li>
+                                                                @endguest
+                                                                <li><a href="#" data-toggle="modal"
+                                                                       data-target="#modalQuickview{{$part->id}}"><i
+                                                                            class="icon-eye"></i></a></li>
+                                                                <li><a href="#" data-toggle="modal"
+                                                                       data-target="#modalAddcart"><i
+                                                                            class="icon-shopping-cart"></i></a></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -163,59 +173,7 @@
     </div>
     <!-- ...:::: Start Product Tab Section:::... -->
 
-    {{--    <!-- ...:::: Start Banner Section банеры с скидками:::... -->--}}
-    {{--    <div class="banner-section section-top-gap-100">--}}
-    {{--        <!-- Start Banner Wrapper -->--}}
-    {{--        <div class="banner-wrapper">--}}
-    {{--            <div class="container">--}}
-    {{--                <div class="row">--}}
-    {{--                    <div class="col-lg-4 col-md-6 col-12">--}}
-    {{--                        <!-- Start Banner Single -->--}}
-    {{--                        <div class="banner-single">--}}
-    {{--                            <a href="product-details-default.html" class="banner-img-link">--}}
-    {{--                                <img class="banner-img" src="assets/images/banner_images/aments_banner_01.jpg" alt="">--}}
-    {{--                            </a>--}}
-    {{--                            <div class="banner-content">--}}
-    {{--                                <span class="banner-text-tiny">Car Wheel</span>--}}
-    {{--                                <h3 class="banner-text-large">30% Off</h3>--}}
-    {{--                                <a href="product-details-default.html" class="banner-link">Shop Now</a>--}}
-    {{--                            </div>--}}
-    {{--                        </div> <!-- End Banner Single -->--}}
-    {{--                    </div>--}}
-    {{--                    <div class="col-lg-4 col-md-6 col-12">--}}
-    {{--                        <!-- Start Banner Single -->--}}
-    {{--                        <div class="banner-single">--}}
-    {{--                            <a href="product-details-default.html" class="banner-img-link">--}}
-    {{--                                <img class="banner-img" src="assets/images/banner_images/aments_banner_02.jpg" alt="">--}}
-    {{--                            </a>--}}
-    {{--                            <div class="banner-content">--}}
-    {{--                                <span class="banner-text-tiny">Car Vails</span>--}}
-    {{--                                <h3 class="banner-text-large">40% Off</h3>--}}
-    {{--                                <a href="product-details-default.html" class="banner-link">Shop Now</a>--}}
-    {{--                            </div>--}}
-    {{--                        </div> <!-- End Banner Single -->--}}
-    {{--                    </div>--}}
-    {{--                    <div class="col-lg-4 col-md-6 col-12">--}}
-    {{--                        <!-- Start Banner Single -->--}}
-    {{--                        <div class="banner-single">--}}
-    {{--                            <a href="product-details-default.html" class="banner-img-link">--}}
-    {{--                                <img class="banner-img" src="assets/images/banner_images/aments_banner_03.jpg" alt="">--}}
-    {{--                            </a>--}}
-    {{--                            <div class="banner-content">--}}
-    {{--                                <span class="banner-text-tiny">Car Vails</span>--}}
-    {{--                                <h3 class="banner-text-large">50% Off</h3>--}}
-    {{--                                <a href="product-details-default.html" class="banner-link">Shop Now</a>--}}
-    {{--                            </div>--}}
-    {{--                        </div> <!-- End Banner Single -->--}}
-    {{--                    </div>--}}
-    {{--                </div>--}}
-    {{--            </div>--}}
-    {{--        </div> <!-- End Banner Wrapper -->--}}
-    {{--    </div>--}}
-    {{--    <!-- ...:::: End Banner Section:::... -->--}}
-
-    <!-- ...:::: Start Product Catagory Section:::... -->
-    <div class="banner-section section-top-gap-100">
+    <div class="banner-section section-top-gap-100" data-aos="fade-up" data-aos-delay="50">
         <!-- Start Banner Wrapper -->
         <div class="banner-wrapper">
             <div class="container">
@@ -225,7 +183,7 @@
                         <div class="banner-single">
                             <a href="product-details-default.html" class="banner-img-link">
                                 <img class="banner-img banner-img-big"
-                                     src="assets/images/banner_images/aments_big-banner.jpg" alt="">
+                                     src="{{Storage::url ('/image/slider-3.png')}}" alt="">
                             </a>
                             <div class="banner-content">
                                 <span class="banner-text-small">2021 Latest Collection</span>
@@ -238,9 +196,8 @@
             </div>
         </div> <!-- End Banner Wrapper -->
     </div> <!-- ...:::: End Product Catagory Section:::... -->
-
     <!-- ...:::: Start Company Logo Section:::... -->
-    <div class="company-logo-section section-top-gap-100">
+    <div class="company-logo-section section-top-gap-100" data-aos="fade-up" data-aos-delay="0">
         <!-- Start Company Logo Wrapper -->
         <div class="company-logo-wrapper">
             <div class="container">
@@ -248,23 +205,23 @@
                     <div class="col-12">
                         <div class="company-logo-slider">
                             <!-- Start Company logo Single -->
-                            <div class="company-logo-single">
-                                <img src="assets/images/company_logo/company_logo_1.png" alt=""
+                            <div class="company-logo-single" data-aos="fade-up" data-aos-delay="0">
+                                <img src="{{Storage::url ('/image/ford-logo.png')}}" alt=""
                                      class="img-fluid company-logo-image">
                             </div> <!-- End Company logo Single -->
                             <!-- Start Company logo Single -->
-                            <div class="company-logo-single">
-                                <img src="assets/images/company_logo/company_logo_2.png" alt=""
+                            <div class="company-logo-single" data-aos="fade-up" data-aos-delay="200">
+                                <img src="{{Storage::url ('/image/linkoln-logo.png')}}" alt=""
                                      class="img-fluid company-logo-image">
                             </div> <!-- End Company logo Single -->
                             <!-- Start Company logo Single -->
-                            <div class="company-logo-single">
-                                <img src="assets/images/company_logo/company_logo_3.png" alt=""
+                            <div class="company-logo-single" data-aos="fade-up" data-aos-delay="400">
+                                <img src="{{Storage::url ('/image/ford-logo.png')}}" alt=""
                                      class="img-fluid company-logo-image">
                             </div> <!-- End Company logo Single -->
                             <!-- Start Company logo Single -->
-                            <div class="company-logo-single">
-                                <img src="assets/images/company_logo/company_logo_4.png" alt=""
+                            <div class="company-logo-single" data-aos="fade-up" data-aos-delay="600">
+                                <img src="{{Storage::url ('/image/linkoln-logo.png')}}" alt=""
                                      class="img-fluid company-logo-image">
                             </div> <!-- End Company logo Single -->
                         </div>
@@ -277,11 +234,12 @@
     <!-- ...:::: Start Blog Feed Section:::... -->
     <div class="blog-feed-section section-top-gap-100">
         <!-- Start Section Content -->
-        <div class="section-content-gap">
+        <div class="section-content-gap" data-aos="fade-up" data-aos-delay="50">
             <div class="container">
                 <div class="row">
                     <div class="section-content">
-                        <h3 class="section-title">Latest News</h3>
+                        <h3 class="section-title" data-aos="fade-up" data-aos-delay="200">Цікаві факти про
+                            автомобілі</h3>
                     </div>
                 </div>
             </div>
@@ -293,7 +251,7 @@
                 <div class="row">
                     <div class="col-lg-4 col-md-6 col-12">
                         <!-- Start Blog Feed Single -->
-                        <div class="blog-feed-single">
+                        <div class="blog-feed-single" data-aos="fade-up" data-aos-delay="0">
                             <a href="blog-single-sidebar-left.html" class="blog-feed-img-link">
                                 <img src="assets/images/blog_images/aments_blog_01.jpg" alt="" class="blog-feed-img">
                             </a>
@@ -310,7 +268,7 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-12">
                         <!-- Start Blog Feed Single -->
-                        <div class="blog-feed-single">
+                        <div class="blog-feed-single" data-aos="fade-up" data-aos-delay="200">
                             <a href="blog-single-sidebar-left.html" class="blog-feed-img-link">
                                 <img src="assets/images/blog_images/aments_blog_02.jpg" alt="" class="blog-feed-img">
                             </a>
@@ -327,7 +285,7 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-12">
                         <!-- Start Blog Feed Single -->
-                        <div class="blog-feed-single">
+                        <div class="blog-feed-single" data-aos="fade-up" data-aos-delay="400">
                             <a href="blog-single-sidebar-left.html" class="blog-feed-img-link">
                                 <img src="assets/images/blog_images/aments_blog_03.jpg" alt="" class="blog-feed-img">
                             </a>
@@ -456,7 +414,8 @@
                                         <!-- Start  Product Details Meta Area-->
                                         <div class="product-details-meta mb-20">
                                             <ul>
-                                                <form action="{{route('shop.wishlist.store', $part->id)}}" method="post">
+                                                <form action="{{route('shop.wishlist.store', $part->id)}}"
+                                                      method="post">
                                                     @csrf
                                                     <button type="submit" style="background:transparent; border:0">
                                                         @auth()

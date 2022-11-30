@@ -2,41 +2,20 @@
 
 @section('content')
 
-    <!-- ...:::: Start Breadcrumb Section:::... -->
-    <div class="breadcrumb-section">
-        <div class="breadcrumb-wrapper">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12 d-flex justify-content-between justify-content-md-between  align-items-center flex-md-row flex-column">
-                        <h3 class="breadcrumb-title">Контакти</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> <!-- ...:::: End Breadcrumb Section:::... -->
-
     <!-- ...::::Start Map Section:::... -->
-    <div class="map-section">
+    <div class="map-section" style="margin-top: 50px" data-aos="fade-up" data-aos-delay="100">
         <div class="container">
             <div class="row">
-                <div class="col-12">
+                <div class="col-8">
                     <div class="mapouter">
                         <div class="gmap_canvas">
                             <iframe id="gmap_canvas" src="https://maps.google.com/maps?q=121%20King%20St%2C%20Melbourne%20VIC%203000%2C%20Australia&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div> <!-- ...::::End  Map Section:::... -->
-
-    <!-- ...::::Start Contact Section:::... -->
-    <div class="contact-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4">
+                <div class="col-4">
                     <!-- Start Contact Details -->
-                    <div class="contact-details-wrapper section-top-gap-100">
+                    <div class="contact-details-wrapper" data-aos="fade-up" data-aos-delay="100">
                         <div class="contact-details">
                             <!-- Start Contact Details Single Item -->
                             <div class="contact-details-single-item">
@@ -73,15 +52,24 @@
                         <div class="contact-social">
                             <h5>Ми у соцмережах</h5>
                             <ul>
-                                <li><a href=""><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="tg://resolve?domain=batura_m_v"><i class="fa fa-telegram"></i></a></li>
                                 <li><a href=""><i class="fa fa-instagram"></i></a></li>
                             </ul>
                         </div> <!-- End Contact Social Link -->
                     </div> <!-- End Contact Details -->
                 </div>
+
+            </div>
+        </div>
+    </div> <!-- ...::::End  Map Section:::... -->
+
+    <!-- ...::::Start Contact Section:::... -->
+    <div class="contact-section" data-aos="fade-up" data-aos-delay="300">
+        <div class="container">
+            <div class="row">
                 <div class="col-lg-8">
                     <div class="contact-form section-top-gap-100">
-                        <h3>Зв'язок з нами</h3>
+                        <h3>Зв'язок з нами | он вообще нужен?</h3>
                         <form action="#" method="POST">
                             <div class="row">
                                 <div class="col-lg-6">
@@ -115,6 +103,8 @@
                         </form>
                     </div>
                 </div>
+                <div class="col-lg-4"></div>
+
             </div>
         </div>
     </div>
