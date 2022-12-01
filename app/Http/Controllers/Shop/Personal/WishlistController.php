@@ -7,16 +7,10 @@ use App\Models\Parts;
 
 class WishlistController extends Controller
 {
-    public function index()
-    {
-        $likedParts = auth()->user()->GetLikedParts;
-        return view('shop.personal.wishlist', compact('likedParts' ));
-    }
-
     public function destroy($part)
     {
         auth()->user()->GetLikedParts()->detach($part);
 
-        return redirect()->route('wishlist.index');
+        return redirect()->route('personal.index');
     }
 }

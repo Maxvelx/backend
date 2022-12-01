@@ -9,6 +9,8 @@ class IndexController extends Controller
 {
     public function __invoke()
     {
-        return view('shop.personal.index');
+        $user = auth ()->user ();
+        $likedParts = auth()->user()->GetLikedParts;
+        return view('shop.personal.index', compact ('user', 'likedParts'));
     }
 }

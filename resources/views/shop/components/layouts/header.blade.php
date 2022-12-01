@@ -13,7 +13,7 @@
                     <div class="header-top--right">
                         <!-- Start Header Top Menu -->
                         <ul class="header-user-menu">
-                            <li><a href="telegram:+380973332222">Написать в телеграм</a></li>
+                            <li><a href="tg://resolve?domain=batura_m_v">Написать в телеграм <i class="fa fa-telegram"></i></a></li>
                             <li><a href="tel:+380973332222">(097) 333 22 22</a></li>
                             <li class="has-user-dropdown">
                                 <i class="fas fa-money-bill-alt"></i>
@@ -78,9 +78,9 @@
                     <ul class="header-action-icon">
                         @auth()
                             <li>
-                                <a href="{{route('wishlist.index')}}">
+                                <a href="{{route('personal.index')}}">
                                     <i class="icon-heart"></i>
-                                    <span class="header-action-icon-item-count">3</span>
+                                    <span class="header-action-icon-item-count">{{auth ()->user ()->GetLikedParts->count()}}</span>
                                 </a>
                             </li>
                         @endauth

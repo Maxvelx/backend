@@ -25,16 +25,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::share('coef', DB::table('settings')->value('coef'));
-        View::share('cat', DB::table('categories')
-            ->where('parent_id', '>',0)
-            ->whereNull('deleted_at')
-            ->limit(6)
-            ->get());;
-        View::share('category_public', DB::table('categories')
-            ->where('parent_id', 0)
-            ->whereNull('deleted_at')
-            ->limit(6)
-            ->get());
+        View::share ( 'coef', DB::table ( 'settings' )->value ( 'coef' ) );
+
+        View::share ( 'cat', DB::table ( 'categories' )
+            ->where ( 'parent_id', '>', 0 )
+            ->whereNull ( 'deleted_at' )
+            ->limit ( 6 )
+            ->get () );
+
+        View::share ( 'category_public', DB::table ( 'categories' )
+            ->where ( 'parent_id', 0 )
+            ->whereNull ( 'deleted_at' )
+            ->limit ( 6 )
+            ->get () );
+
     }
 }
