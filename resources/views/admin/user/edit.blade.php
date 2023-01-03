@@ -36,7 +36,7 @@
                     @enderror
                 </div>
                 <div class="form-group input-group-lg">
-                    <label for="patronymic">Прізвище</label>
+                    <label for="patronymic">По батькові</label>
                     <input class="form-control" id="patronymic" name="patronymic" type="text"
                            placeholder="Введіть прізвище" value="{{$user->patronymic ?? old('patronymic')}}">
                     @error('patronymic')

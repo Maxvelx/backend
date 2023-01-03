@@ -30,14 +30,14 @@
                                 <div class="col-sm-4 border-right">
                                     <div class="description-block">
                                         <h3 class="text">10 років</h3>
-                                        <span class="text">З нами напротязі</span>
+                                        <span class="text">З нами на протязі</span>
                                     </div>
                                     <!-- /.description-block -->
                                 </div>
                                 <!-- /.col -->
                                 <div class="col-sm-4">
                                     <div class="description-block">
-                                        <h3 class="text">35</h3>
+                                        <h3 class="text">{{$user->GetLikedParts->count()}}</h3>
                                         <span class="text">Додано обраних запчастин</span>
                                     </div>
                                     <!-- /.description-block -->
@@ -54,7 +54,7 @@
                     <!-- About Me Box -->
                     <div class="card card-widget widget-user shadow">
                         <div class="card-header">
-                            <h3 class="card-title">Інформація про кліента {{$user->name}} {{$user->patronymic}}</h3>
+                            <h3 class="card-title">Інформація про клієнта {{$user->name}} {{$user->patronymic}}</h3>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -85,7 +85,7 @@
                             </div>
                             <strong class="row pb-1">
                                 <div class="col-5">
-                                    <i class="fas fa-book mr-2"></i> Призвище Ім'я По батькові
+                                    <i class="fas fa-book mr-2"></i> Прізвище Ім'я По батькові
                                 </div>
                                 <div class="col-7">
                                     <i class="fas fa-truck mr-2"></i> Адреса для доставки
@@ -125,10 +125,10 @@
                         <div class="card-header p-2">
                             <ul class="nav nav-pills">
                                 <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Замовлення
-                                        кліента</a></li>
+                                        клієнта</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Автомобілі
-                                        кліента</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Обрані
+                                        клієнта</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#wishlist" data-toggle="tab">Обрані
                                         запчастини</a></li>
                             </ul>
                         </div><!-- /.card-header -->
@@ -143,7 +143,52 @@
                                 </div>
                                 <!-- /.tab-pane -->
 
-                                <div class="tab-pane" id="settings">
+                                <div class="tab-pane" id="wishlist">
+                                    <div class="card-body table-responsive p-0">
+                                        <table class="table table-hover text-nowrap">
+                                            <!-- Start Wishlist Table Head -->
+                                            <thead>
+                                            <tr>
+                                                <th>Видалити</th>
+                                                <th>Зображення</th>
+                                                <th>Назва запчастини</th>
+                                                <th>Ціна</th>
+                                                <th>Наявність</th>
+                                                <th>Додати до замовлення</th>
+                                            </tr>
+                                            </thead> <!-- End Cart Table Head -->
+                                            <tbody>
+                                            <!-- Start Wishlist Single Item-->
+                                            @foreach($likedParts as $part)
+                                                <tr>
+                                                    <td>
+                                                        <form action="{{route('wishlist.destroy', $part)}}"
+                                                              method="post">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit"><i class="fas fa-trash"></i></button>
+                                                        </form>
+                                                    </td>
+                                                    <td class="product_thumb"><a
+                                                            href="product-details-default.html"><img
+                                                                src=""
+                                                                alt=""></a></td>
+                                                    <td class="product_name"><a
+                                                            href="{{route('parts.show', $part->id)}}">{{$part->name_parts}}</a>
+                                                    </td>
+                                                    <td class="product-price">@include('shop.components.etc.price')</td>
+                                                    <td class="product_stock">{{$part->quantity > 0 ? 'У наявності' : 'Під замовлення'}}</td>
+                                                    <td>
+                                                        <button class="btn btn-outline-danger" href="#"
+                                                                data-toggle="modal"
+                                                                data-target="#modalAddcart">До замовлення
+                                                        </button>
+                                                    </td>
+                                                </tr> <!-- End Wishlist Single Item-->
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                                 <!-- /.tab-pane -->
                             </div>

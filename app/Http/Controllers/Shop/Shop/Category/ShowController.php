@@ -21,7 +21,7 @@ class ShowController extends Controller
 
         } else {
 
-            $parts = Parts::where('category_id', $category->id)->get();
+            $parts = Parts::where('category_id', $category->id)->paginate(20);
             return view('shop.shop.index', compact('parts'));
         }
     }

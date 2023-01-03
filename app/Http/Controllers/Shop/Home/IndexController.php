@@ -10,7 +10,7 @@ class IndexController extends Controller
 {
     public function __invoke()
     {
-        $parts = Parts::all();
+        $parts = Parts::limit(8)->orderByDesc('id')->get();
         return view('shop.home.index', compact('parts'));
     }
 

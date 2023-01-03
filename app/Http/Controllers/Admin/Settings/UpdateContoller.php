@@ -9,7 +9,7 @@ class UpdateContoller extends Controller
 {
     public function __invoke(Request $request)
     {
-        $data = $request->validate(['coef' => 'required']);
+        $data = $request->validate(['coef' => 'required','usd' => 'required','euro' => 'required']);
         \DB::table('settings')->update($data);
         return view('admin.settings_shop.index');
     }

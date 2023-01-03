@@ -1,6 +1,15 @@
-@extends('shop.components.layouts.main.main')
+@extends('layouts.app')
 
 @section('content')
+    <li><a href=""
+           onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();"><i
+                class="fas fa-arrow-right"></i> Вихід
+        </a>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+            @csrf
+        </form>
+    </li>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">

@@ -29,13 +29,13 @@
                     <table class="table table-hover text-nowrap">
                         <thead>
                         <tr>
-                            <th>Взаемодія</th>
+                            <th>Взаємодія</th>
                             <th>Ім'я</th>
                             <th>Email адреса</th>
                             <th>Фамілія</th>
-                            <th>Прізвище</th>
+                            <th>По батькові</th>
                             <th>Номер телефону</th>
-                            <th>Почтова адреса</th>
+                            <th>Поштова адреса</th>
                             <th>Права</th>
                         </tr>
                         </thead>
@@ -65,6 +65,7 @@
                         </tbody>
                     </table>
                 </div>
+                {{$users->render()}}
                 <!-- /.card-body -->
             </div>
             <!-- /.card -->

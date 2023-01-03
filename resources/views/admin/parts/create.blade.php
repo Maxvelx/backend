@@ -7,7 +7,7 @@
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form action="{{route('parts.store')}}" method="post">
+        <form action="{{route('parts.store')}}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="card-body col-5">
                 <div class="form-group input-group-lg">
@@ -16,6 +16,17 @@
                         @include('admin.parts.func.brand_models')
                     </select>
                     @error('brands')
+                    <div class="text-danger">{{$message}}</div>
+                    @enderror
+                </div>
+                <div class="form-group input-group-lg">
+                    <label for="brand_auto">Виберіть тег</label>
+                    <select class="js-example-basic-multiple col-12" name="tags[]" multiple="multiple">
+                        @foreach($tags as $tag)
+                        <option value="{{$tag->id}}">{{$tag->title}}</option>
+                        @endforeach
+                    </select>
+                    @error('tags')
                     <div class="text-danger">{{$message}}</div>
                     @enderror
                 </div>
@@ -79,7 +90,7 @@
                     @enderror
                 </div>
                 <div class="form-group input-group-lg">
-                    <label for="price_2">Фіксована ціна, буде виведена приорітетно</label>
+                    <label for="price_2">Фіксована ціна, буде виведена пріоритетно</label>
                     <input class="form-control" id="price_2" name="price_2" type="text"
                            placeholder="Ціна фікс, для знижок и т.і." value="{{old('price_2')}}">
                     @error('price_2')
@@ -95,9 +106,21 @@
                     <div class="text-danger">{{$message}}</div>
                     @enderror
                 </div>
+                <div class="form-group">
+                    <label for="exampleInputFile">Зображення для запчастини</label>
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input type="file" multiple="multiple" name="image[]" class="custom-file-input" id="exampleInputFile">
+                            <label class="custom-file-label" for="exampleInputFile">Виберіть файл</label>
+                        </div>
+                    </div>
+                </div>
+                @error('image')
+                <div class="text-danger">{{$message}}</div>
+                @enderror
             </div>
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary">Створити</button>
+                <button type="submit" class="btn btn-primary">Додати нову запчастину</button>
             </div>
         </form>
     </div>

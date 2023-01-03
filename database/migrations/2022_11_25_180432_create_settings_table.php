@@ -15,7 +15,9 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->float('coef');
+            $table->float('coef')->default (1.3);
+            $table->float ( 'usd' )->default (1);
+            $table->float ( 'euro' )->default (1);
             $table->timestamps();
         });
     }

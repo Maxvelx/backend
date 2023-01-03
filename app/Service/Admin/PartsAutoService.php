@@ -3,62 +3,92 @@
 namespace App\Service\Admin;
 
 use App\Models\Parts;
+use App\Models\PartsImages;
 
 class PartsAutoService
 {
-    public function store($data)
+    public function store( $data )
     {
 
         try {
             \DB::beginTransaction();
 
-            if(!empty($data['brands'])){
+            if( !empty( $data['brands'] ) ) {
                 $brandIds = $data['brands'];
-                unset($data['brands']);
+                unset( $data['brands'] );
             }
-            if (!empty($data['image_brand'])) {
-                $data['image_brand'] = \Storage::disk('public')->put('/image', $data['image_brand']);
+            if( !empty( $data['image'] ) ) {
+                $imageIds = $data['image'];
+                unset( $data['image'] );
+            }
+            if( !empty( $data['tags'] ) ) {
+                $tagsIds = $data['tags'];
+                unset( $data['tags'] );
             }
 
-            $part = Parts::firstOrCreate($data);
+            $part = Parts::firstOrCreate( $data );
 
-            if (!empty($brandIds)){
-                $part->brands()->attach($brandIds);
+            if( !empty( $brandIds ) ) {
+                $part->brands()->attach( $brandIds );
+            }
+            if( !empty( $tagsIds ) ) {
+                $part->tags()->attach( $tagsIds );
+            }
+            if( !empty( $imageIds ) ) {
+                foreach( $imageIds as $image ) {
+                    $image = \Storage::disk( 'public' )->put( '/image/parts', $image );
+                    PartsImages::firstOrCreate( [ 'path_image' => $image, 'part_id' => $part['id'] ] );
+                }
             }
 
             \DB::commit();
 
-        } catch (\Exception $exception) {
+        } catch( \Exception $exception ) {
             \DB::rollBack();
-            abort(500);
+            abort( 500, $exception );
         }
     }
 
-    public function update($data, $part)
+    public function update( $data, $part )
     {
 
         try {
             \DB::beginTransaction();
 
-            if(!empty($data['brands'])){
+            if( !empty( $data['brands'] ) ) {
                 $brandIds = $data['brands'];
-                unset($data['brands']);
+                unset( $data['brands'] );
             }
-            if (!empty($data['image_brand'])) {
-                $data['image_brand'] = \Storage::disk('public')->put('/image', $data['image_brand']);
+            if( !empty( $data['image'] ) ) {
+                $imagesIds = $data['image'];
+                unset( $data['images'] );
+            }
+            if( !empty( $data['tags'] ) ) {
+                $tagsIds = $data['tags'];
+                unset( $data['tags'] );
             }
 
-            $part->update($data);
+            $part->update( $data );
 
-            if (!empty($brandIds)) {
-                $part->brands()->sync($brandIds);
+            if( !empty( $brandIds ) ) {
+                $part->brands()->sync( $brandIds );
+            }
+            if( !empty( $tagsIds ) ) {
+                $part->tags()->attach( $tagsIds );
+            }
+            if( !empty( $imagesIds ) ) {
+                $part->images()->delete();
+                foreach( $imagesIds as $image ) {
+                    $image = \Storage::disk( 'public' )->put( '/image/parts', $image );
+                    $part->images()->firstOrCreate( [ 'path_image' => $image, 'part_id' => $part['id'] ] );
+                }
             }
 
             \DB::commit();
 
-        } catch (\Exception $exception) {
+        } catch( \Exception $exception ) {
             \DB::rollBack();
-            abort(500);
+            abort( 500 );
         }
     }
 }

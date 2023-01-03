@@ -15,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::paginate(10);
         $roles = User::getRole();
         return view('admin.user.index', compact('users','roles'));
     }
@@ -50,7 +50,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('admin.user.show', compact('user'));
+        $likedParts = $user->GetLikedParts;
+        return view('admin.user.show', compact('user','likedParts'));
     }
 
     /**

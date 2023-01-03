@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Admin\Parts;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Parts\StorePartsRequest;
 use App\Http\Requests\Admin\Parts\UpdatePartsRequest;
+use App\Http\Resources\API\client\PartsResource;
 use App\Models\BrandAuto;
 use App\Models\Category;
 use App\Models\Parts;
+use App\Models\Tag;
 
 class PartsController extends BaseController
 {
@@ -17,7 +19,7 @@ class PartsController extends BaseController
      */
     public function index()
     {
-        $parts = Parts::all();
+        $parts = Parts::paginate( 20 );
         return view('admin.parts.index', compact('parts'));
     }
 
@@ -27,31 +29,32 @@ class PartsController extends BaseController
      */
     public function create()
     {
-        $currency = Parts::getCurrencyStatus();
-        $brandAutos = BrandAuto::all();
+        $currency   = Parts::getCurrencyStatus();
+        $brandAutos = BrandAuto::tree();
         $categories = Category::tree();
-        $delimiter = '';
-        return view('admin.parts.create', compact('delimiter', 'categories', 'brandAutos', 'currency'));
+        $tags       = Tag::all();
+        $delimiter  = '';
+        return  view('admin.parts.create',compact('currency','brandAutos',
+        'categories','tags','delimiter'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\Admin\Parts\StorePartsRequest  $request
+     * @param \App\Http\Requests\Admin\Parts\StorePartsRequest $request
      */
-    public function store(StorePartsRequest $request)
+    public function store( StorePartsRequest $request )
     {
         $data = $request->validated();
-        $this->service->store($data);
-        return redirect()->route('parts.index');
+        $this->service->store( $data );
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Parts  $part
+     * @param \App\Models\Parts $part
      */
-    public function show(Parts $part)
+    public function show( Parts $part )
     {
         //
     }
@@ -59,38 +62,39 @@ class PartsController extends BaseController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Parts  $part
+     * @param \App\Models\Parts $part
      */
-    public function edit(Parts $part)
+    public function edit( Parts $part )
     {
-        $currency = Parts::getCurrencyStatus();
-        $brandAutos = BrandAuto::all();
+        $currency   = Parts::getCurrencyStatus();
+        $brandAutos = BrandAuto::tree();
         $categories = Category::tree();
-        $delimiter = '';
-        return view('admin.parts.edit', compact('part','delimiter', 'categories','brandAutos', 'currency'));
+        $tags       = Tag::all();
+        $delimiter  = '';
+        return view( 'admin.parts.edit', compact( 'part', 'delimiter', 'categories', 'brandAutos', 'currency', 'tags' ) );
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\Admin\Parts\UpdatePartsRequest  $request
-     * @param  \App\Models\Parts  $parts
+     * @param \App\Http\Requests\Admin\Parts\UpdatePartsRequest $request
+     * @param \App\Models\Parts $parts
      */
-    public function update(UpdatePartsRequest $request, Parts $part)
+    public function update( UpdatePartsRequest $request, Parts $part )
     {
         $data = $request->validated();
-        $this->service->update($data, $part);
-        return redirect()->route('parts.index');
+        $this->service->update( $data, $part );
+        return redirect()->route( 'parts.index' );
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Parts  $part
+     * @param \App\Models\Parts $part
      */
-    public function destroy(Parts $part)
+    public function destroy( Parts $part )
     {
         $part->delete();
-        return redirect()->route('parts.index');
+        return redirect()->route( 'parts.index' );
     }
 }

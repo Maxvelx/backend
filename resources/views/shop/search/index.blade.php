@@ -17,7 +17,7 @@
                             <th>Номер ориг.</th>
                             <th>Ціна</th>
                             <th>Назва</th>
-                            <th>Срок поставки</th>
+                            <th>Термін поставки</th>
                             <th>Наявність</th>
                         </tr>
                         </thead>
@@ -27,8 +27,7 @@
                                 <td>{{$part->num_part}}</td>
                                 <td>{{$part->brand_part}}</td>
                                 <td>
-                                    <form action="{{route('shop.search.index')}}" method="post">
-                                        @csrf
+                                    <form action="{{route('shop.search.index')}}" method="get">
                                         <input type="submit" value="{{$part->num_oem}}" name="search"
                                                class="bg-transparent border-0 text-dark">
                                     </form>
@@ -46,6 +45,7 @@
                         </tbody>
                     </table>
                 </div>
+                {{$parts->render()}}
                 <!-- /.card-body -->
             </div>
             <!-- /.card -->

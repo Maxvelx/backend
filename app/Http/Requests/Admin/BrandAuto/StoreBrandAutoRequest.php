@@ -24,9 +24,9 @@ class StoreBrandAutoRequest extends FormRequest
     public function rules()
     {
         return [
-            'brand_auto'  => 'required | string',
-            'parent_id'   => 'integer',
-            'image_brand' => 'file |nullable',
+            'brand_auto'  => 'required|string|max:255',
+            'parent_id'   => 'required|integer',
+            'image_brand' => 'required|file',
         ];
     }
 }

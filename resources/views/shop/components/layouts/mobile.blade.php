@@ -33,12 +33,12 @@
     <div class="offcanvas-mobile-menu-wrapper">
         <!-- Start Mobile Menu User Top -->
         <div class="mobile-menu-top">
-            <span>Вітаемо Вас у нашому магазині!</span>
+            <span>Вітаємо Вас у нашому магазині!</span>
             <!-- Start Header Top Menu -->
             <ul class="mobile-menu-user-menu">
                 <li class=" has-mobile-user-dropdown">
                     <i class="fas fa-money-bill-alt"></i>
-                    <a class="mobile-user-menu-link" href=""> USD - Доллар</a>
+                    <a class="mobile-user-menu-link" href=""> USD - Долар</a>
                     <!-- Header Top Menu's Dropdown -->
                     <ul class="user-sub-menu"><i class="fas fa-money-bill-alt"></i>
                         <a href=""> UAH – Гривня</a>
@@ -56,8 +56,7 @@
         </div> <!-- End Mobile Menu User Top -->
         <!-- Start Mobile Menu User Center -->
         <div class="mobile-menu-center">
-            <form action="{{route('shop.search.index')}}" method="post">
-                @csrf
+            <form action="{{route('shop.search.index')}}" method="get">
                 <div class="header-search-box default-search-style d-flex">
                     <input class="default-search-style-input-box border-around border-right-none" name="search"
                            type="search" placeholder="Пошук запчастини по номеру, назві ..." required>
@@ -203,7 +202,7 @@
     </div> <!-- End Offcanvas Mobile Menu Wrapper -->
 </div><!-- ...:::: End Offcanvas Mobile Menu Section:::... -->
 
-<!-- ...:::: Start Offcanvas Addcart Section корзина + избранное:::... -->
+<!-- ...:::: Start Offcanvas Addcart Section кошик :::... -->
 <div id="offcanvas-add-cart" class="offcanvas offcanvas-rightside offcanvas-add-cart-section">
     <!-- Start Offcanvas Header -->
     <div class="offcanvas-header text-right">

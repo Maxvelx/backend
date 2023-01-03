@@ -37,7 +37,7 @@
                 <div class="form-group input-group-lg">
                     <label for="password_conf">Підтвердження пароля</label>
                     <input class="form-control" id="password_conf" name="password_confirmation" type="password"
-                           placeholder="Підтвердіть пароль" value="{{old('password_confirmation')}}">
+                           placeholder="Підтвердити пароль" value="{{old('password_confirmation')}}">
                     @error('password_confirmation')
                     <div class="text-danger">{{$message}}</div>
                     @enderror

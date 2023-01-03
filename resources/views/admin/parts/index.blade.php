@@ -1,9 +1,9 @@
 @extends('admin.components.layouts.main_layouts')
 
 @section('content')
-    @if(session('message'))
-        <div class="alert alert-warning">
-            {{session('message')}}
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{session('success')}}
         </div>
     @endif
     <div class="col-12 py-3 mx-3">
@@ -14,8 +14,7 @@
         <h4 class="text-center display-6">Пошук запчастини по номеру, назві, тощо</h4>
         <div class="row">
             <div class="col-md-8 offset-md-2">
-                <form action="{{route('search.index')}}" method="post">
-                    @csrf
+                <form action="{{route('search.index')}}" method="get">
                     <div class="input-group">
                         <input type="search" name="search" class="form-control form-control-lg"
                                placeholder="Пошук запчастини">
@@ -41,13 +40,10 @@
                     <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th colspan="2">Взаемодія</th>
+                            <th colspan="2">Взаємодія</th>
                             <th>Номер зап.</th>
                             <th>Бренд</th>
                             <th>Номер ориг.</th>
-                            <th>Ціна</th>
-                            <th>Роздріб</th>
-                            <th>Ціна FIX</th>
                             <th>Назва</th>
                             <th>Наявність</th>
                         </tr>
@@ -67,16 +63,12 @@
                                 <td>{{$part->num_part}}</td>
                                 <td>{{$part->brand_part}}</td>
                                 <td>
-                                    <form action="{{route('search.index')}}" method="post">
-                                        @csrf
+                                    <form action="{{route('search.index')}}" method="get">
                                         <input type="submit" value="{{$part->num_oem}}" name="search"
                                                class="bg-transparent border-0 text-light">
                                     </form>
                                 </td>
-                                <td>{{$part->getPrice($part)['price_1'].'грн'}}</td>
-                                <td>{{$part->getPrice($part)['price_1']*$coef . 'грн'}}</td>
-                                <td>{{isset($part->price_2) ? $part->getPrice($part)['price_2'].'грн': '--'}}</td>
-                                <td style="max-width: 200px; overflow: hidden; white-space: nowrap">{{$part->name_parts}}</td>
+                               <td style="max-width: 200px; overflow: hidden; white-space: nowrap">{{$part->name_parts}}</td>
                                 @if($part->quantity > 0)
                                     <td class="text-success">У наявності</td>
                                 @elseif($part->quantity <= 0)
@@ -87,6 +79,7 @@
                         </tbody>
                     </table>
                 </div>
+                {{$parts->render()}}
                 <!-- /.card-body -->
             </div>
             <!-- /.card -->

@@ -13,7 +13,8 @@ class SearchUserController extends Controller
         $data  = $request->validated();
         $users = User::where('phone_number', 'LIKE', $data['search'] . '%')
             ->orWhere('name', 'LIKE', '%' . $data['search'] . '%')
-            ->get();
+            ->paginate(10)
+            ->setPath('admin/search_user'.'?'.'search='.$data['search']);
 
         return view('admin.user.index', compact('users'));
     }

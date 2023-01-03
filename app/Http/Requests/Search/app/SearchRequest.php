@@ -25,6 +25,7 @@ class SearchRequest extends FormRequest
     {
         return [
             'search' => 'string',
+            'page' => '',
         ];
     }
 }

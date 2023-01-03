@@ -7,17 +7,37 @@
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form action="{{route('parts.update', $part)}}" method="post">
+        <form action="{{route('parts.update', $part)}}" method="post" enctype="multipart/form-data">
             @csrf
             @method('PATCH')
             <div class="card-body col-5">
                 <div class="form-group input-group-lg">
                     <label for="brand_auto">Бренд автомобіля</label>
-                    <select class="custom-select form-control-border" name="brand_model_auto_id" id="brand_auto">
-                        <option value="1">Ford</option>
-                        <option value="2">Suzuki</option>
-                    </select>
-                    @error('brand_auto')
+                        <select class="select2 js-example-basic-multiple" multiple="" name="brands[]" style="width: 100%;" data-select2-id="7" tabindex="-1" aria-hidden="true">
+                            @include('admin.parts.func.brand_models')
+                        </select>
+                    @error('brands')
+                    <div class="text-danger">{{$message}}</div>
+                    @enderror
+                </div>
+                <div class="form-group input-group-lg">
+                    <label for="brand_auto">Виберіть тег</label>
+                        <select class="js-example-basic-multiple col-12" name="tags[]" multiple="multiple">
+                            @foreach($tags as $tag)
+                            <option value="{{$tag->id}}"
+@isset($part->tags)
+    @foreach($part->tags as $tagOnPart)
+    @if($tagOnPart->id === $tag->id)
+        selected
+        @endif
+        @endforeach
+    @endisset
+                            >
+                                {{$tag->title}}
+                            </option>
+                            @endforeach
+                        </select>
+                    @error('tags')
                     <div class="text-danger">{{$message}}</div>
                     @enderror
                 </div>
@@ -97,6 +117,18 @@
                     <div class="text-danger">{{$message}}</div>
                     @enderror
                 </div>
+                <div class="form-group">
+                    <label for="exampleInputFile">Зображення для запчастини</label>
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input type="file" multiple="multiple" name="image[]" class="custom-file-input" id="exampleInputFile">
+                            <label class="custom-file-label" for="exampleInputFile">Виберіть файл</label>
+                        </div>
+                    </div>
+                </div>
+                @error('image')
+                <div class="text-danger">{{$message}}</div>
+                @enderror
             </div>
             <div class="card-footer">
                 <button type="submit" class="btn btn-primary">Зберегти зміни</button>

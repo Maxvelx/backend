@@ -26,15 +26,19 @@ class UpdatePartsRequest extends FormRequest
         return [
             'brands[]'       => 'array|nullable',
             'brands.*'       => 'nullable|exists:brand_autos,id',
+            'tags[]'         => 'array|nullable',
+            'tags.*'         => 'nullable|exists:tags,id',
             'brand_part'     => 'string|nullable',
             'num_part'       => 'string|nullable',
             'num_oem'        => 'string|nullable',
             'name_parts'     => 'string|nullable',
-            'quantity'       => 'integer|nullable',
-            'price_1'        => 'integer|nullable',
-            'price_2'        => 'integer|nullable',
+            'quantity'       => 'string|nullable',
+            'price_1'        => 'nullable',
+            'price_2'        => 'nullable',
             'price_currency' => 'integer|required',
             'category_id'    => 'integer',
+            'image[]'        => 'array',
+            'image.*'        => 'image',
         ];
     }
 }

@@ -15,7 +15,7 @@ class BrandAuto extends Model
 
     public function parts()
     {
-        return $this->belongsToMany(Parts::class);
+        return $this->belongsToMany(Parts::class, 'brand_parts', 'brand_auto_id', 'part_id');
     }
 
     public function brandOrModel($parent_id)

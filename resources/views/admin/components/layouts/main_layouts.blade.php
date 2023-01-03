@@ -3,22 +3,21 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin Panel | Shop</title>
+    <title>Admin Panel | AutoShop</title>
 
-    <base href="{{asset('/')}}">
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Select2 -->
     <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
     <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
     <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="/dist/css/adminlte.min.css">
     <!-- Sweetalert2 -->
-    <link rel="stylesheet" href="plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <link rel="stylesheet" href="/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
 </head>
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">
@@ -181,7 +180,7 @@
 
     <!-- Main Footer -->
     <footer class="main-footer">
-        <strong>Copyright &copy;</strong>
+        <strong>Copyright Maxvel &copy;</strong>
         <div class="float-right d-none d-sm-inline-block">
             <b>Version</b> 0.1
         </div>
@@ -191,19 +190,19 @@
 
 <!-- REQUIRED SCRIPTS -->
 <!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
+<script src="/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- overlayScrollbars -->
-<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
-<script src="dist/js/adminlte.js"></script>
+<script src="/dist/js/adminlte.js"></script>
 <!-- Page specific script -->
-<script src="plugins/select2/js/select2.min.js"></script>
+<script src="/plugins/select2/js/select2.min.js"></script>
 <!-- bs-custom-file-input -->
-<script src="plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+<script src="/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
 <!-- SweetAlert2 -->
-<script src="plugins/sweetalert2/sweetalert2.min.js"></script>
+<script src="/plugins/sweetalert2/sweetalert2.min.js"></script>
 <script>
     $(document).ready(function () {
         $('.js-example-basic-multiple').select2();

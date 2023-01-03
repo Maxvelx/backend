@@ -21,8 +21,7 @@
         <!-- SidebarSearch Form -->
         <div class="form-inline">
             <div class="input-group" data-widget="sidebar-search">
-                <form action="{{route('search.user')}}" method="post">
-                    @csrf
+                <form action="{{route('search.user')}}" method="get">
                     <input name="search" class="form-control form-control-sidebar" type="search"
                            placeholder="Пошук по тел. або імені">
                 </form>
@@ -39,6 +38,14 @@
                         <i class="nav-icon fas fa-align-right"></i>
                         <p>
                             Категорії
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('tags.index')}}" class="nav-link">
+                        <i class="nav-icon fas fa-align-right"></i>
+                        <p>
+                            Теги
                         </p>
                     </a>
                 </li>
@@ -79,6 +86,12 @@
                             <a href="{{route('settings.index')}}" class="nav-link">
                                 <i class="far fa-calendar nav-icon"></i>
                                 <p>Магазину</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('import.index')}}" class="nav-link">
+                                <i class="far fa-calendar nav-icon"></i>
+                                <p>Імпорт прайсів</p>
                             </a>
                         </li>
                     </ul>

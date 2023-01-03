@@ -24,9 +24,9 @@ class UpdateBrandAutoRequest extends FormRequest
     public function rules()
     {
         return [
-            'brand_auto'  => 'required | string',
+            'brand_auto'  => 'string|max:255',
             'parent_id'   => 'integer',
-            'image_brand' => 'file |nullable',
+            'image_brand' => 'nullable',
         ];
     }
 }

@@ -216,17 +216,14 @@
                                                             <div class="product-img-warp">
                                                                 <a href="product-details-default.html"
                                                                    class="product-default-img-link">
-                                                                    <img
-                                                                        src="assets/images/products_images/aments_products_image_1.jpg"
-                                                                        alt=""
-                                                                        class="product-default-img img-fluid">
+                                                                        <img src="{{Storage::url($part->images->value('path_image'))}}"
+                                                                             class="product-default-img img-fluid">
                                                                 </a>
                                                                 <div class="product-action-icon-link">
                                                                     <ul>
                                                                         @auth()
                                                                             <li>
-                                                                                <form id="some"
-                                                                                      action="{{route('shop.wishlist.store', $part->id)}}"
+                                                                                <form action="{{route('shop.wishlist.store', $part->id)}}"
                                                                                       method="post">
                                                                                     @csrf
                                                                                     <a>
@@ -259,7 +256,7 @@
                                                             <div class="product-default-content">
                                                                 <h6 class="cuttedText product-default-link"
                                                                     style="height: 5em"><a
-                                                                        href="product-details-default.html">{{$part->name_parts}}</a>
+                                                                        href="{{route('parts_shop.show', $part->id)}}">{{$part->name_parts}}</a>
                                                                 </h6>
                                                                 <span class="product-default-price">
                                                 @include('shop.components.etc.price')
