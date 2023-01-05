@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin Panel | AutoShop</title>
+    <base href="{{asset('/')}}">
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"

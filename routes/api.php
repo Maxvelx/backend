@@ -43,7 +43,7 @@ Route::get( '/brand/{brand}', \App\Http\Controllers\API\client\Brands\ShowContro
 Route::post( '/brand/show/{brand}', \App\Http\Controllers\API\client\Brands\ShowShopController::class );
 Route::get( '/category', \App\Http\Controllers\API\client\Category\IndexController::class );
 Route::post( '/order', \App\Http\Controllers\API\client\Order\StoreController::class );
-
+Route::post( 'register', \App\Http\Controllers\RegisterController::class );
 
 Route::group( ['prefix'=>'admin'], static function() {
     Route::resource( '/brands', \App\Http\Controllers\API\admin\BrandAuto\BrandAutoController::class );
