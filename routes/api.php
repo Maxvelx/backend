@@ -23,7 +23,7 @@ Route::group( [ 'middleware' => 'api', 'prefix' => 'auth' ], static function( $r
     Route::post( 'logout', [ \App\Http\Controllers\AuthController::class, 'logout' ] );
     Route::post( 'refresh', [ \App\Http\Controllers\AuthController::class, 'refresh' ] );
     Route::post( 'me', [ \App\Http\Controllers\AuthController::class, 'me' ] );
-
+    Route::post( 'edit', \App\Http\Controllers\API\client\User\EditController::class );
 } );
 
 Route::group( [ 'middleware' => 'jwt.auth' ], static function() {
@@ -43,7 +43,7 @@ Route::get( '/brand/{brand}', \App\Http\Controllers\API\client\Brands\ShowContro
 Route::post( '/brand/show/{brand}', \App\Http\Controllers\API\client\Brands\ShowShopController::class );
 Route::get( '/category', \App\Http\Controllers\API\client\Category\IndexController::class );
 Route::post( '/order', \App\Http\Controllers\API\client\Order\StoreController::class );
-Route::post( 'register', \App\Http\Controllers\RegisterController::class );
+Route::post( '/auth/register', \App\Http\Controllers\API\client\User\RegisterController::class );
 
 Route::group( ['prefix'=>'admin'], static function() {
     Route::resource( '/brands', \App\Http\Controllers\API\admin\BrandAuto\BrandAutoController::class );

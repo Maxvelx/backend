@@ -33,7 +33,7 @@ class StoreController extends Controller
             'user_id'      => $user->id,
             'parts'        => json_encode( $data['parts'] ),
             'total_price'  => $data['total_price'],
-            'order_number' => fake()->randomNumber(),
+            'order_number' => fake()->randomNumber(6, true),
         ] );
         return new OrderResource( $order );
     }
