@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\API\client\User;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class EditController extends Controller
 {
-    public function __invoke( \Request $request )
+    public function __invoke( Request $request )
     {
         $data = $request->validate( [
             'name'         => 'required|string|max:256',
