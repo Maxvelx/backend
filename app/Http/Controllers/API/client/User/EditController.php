@@ -14,7 +14,7 @@ class EditController extends Controller
             'patronymic'   => 'required|string|max:256',
             'lastName'     => 'required|string|max:256',
             'address'      => 'required|max: 512',
-            'phone_number' => 'required|string|unique:users,phone_number',
+            'phone_number' => 'required|string|unique:users,phone_number,' . auth()->user()->id,
         ] );
         auth()->user()->update( $data );
         return response( [ 'message' => 'Користувач оновлений' ] );
