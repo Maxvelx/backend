@@ -13,7 +13,7 @@ class ShowShopController extends Controller
     public function __invoke( BrandAuto $brand, PartsShopShowRequest $request )
     {
         $data  = $request->validated();
-        $parts = BrandAuto::find( $brand->id )->parts()->where('is_published',1)->paginate( 12, [ '*' ], 'page', $data['page'] );
+        $parts = BrandAuto::find( $brand->id )->parts()->where('is_published',true)->paginate( 12, [ '*' ], 'page', $data['page'] );
         $brand = BrandAuto::where( 'id', $brand->id )->get();
         return PartsResource::collection( $parts )->additional( [ 'brand' => BrandsResource::collection($brand)] );
     }
