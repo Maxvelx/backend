@@ -2,11 +2,9 @@
 
 namespace App\Models;
 
-use App\Http\Controllers\Shop\PriceCurrency;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Http\Controllers\PriceCurrency;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Parts extends Model
 {
