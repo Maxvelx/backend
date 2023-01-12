@@ -39,7 +39,7 @@ class UpdatePartsRequest extends FormRequest
             'category_id'    => 'integer|nullable',
             'image[]'        => 'array',
             'image.*'        => 'image',
-            'is_published'   => 'string',
+            'is_published'   => '',
         ];
     }
 }
