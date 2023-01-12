@@ -14,10 +14,10 @@ class AdminMiddleware
      */
     public function handle( Request $request, Closure $next )
     {
-        if (Auth::user() &&  Auth::user()->roleId == 1) {
+        if (Auth::user() &&  Auth::user()->roleId === 1) {
             return $next( $request );
         }
 
-        return route('login');
+        return response(status: 404);
     }
 }

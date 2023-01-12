@@ -10,12 +10,14 @@ class PartsResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
+     *
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public
-    function toArray( $request )
-    {
+    function toArray(
+        $request
+    ) {
         return [
             'id'              => $this->id,
             'part_brand'      => $this->brand_part,
@@ -23,7 +25,9 @@ class PartsResource extends JsonResource
             'part_number_oem' => $this->num_oem,
             'part_name'       => $this->name_parts,
             'qty'             => $this->quantity,
-            'price'           => $this->price_2 ? $this->getPrice( $this )['price_2'] : $this->getPrice( $this )['price_1'],
+            'price'           => $this->price_2
+                ? $this->getPrice($this)['price_2']
+                : $this->getPrice($this)['price_1'],
             'image'           => $this->imageUrlFirst,
         ];
     }

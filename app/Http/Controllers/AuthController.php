@@ -13,7 +13,19 @@ class  AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login','refresh']]);
+        $this->middleware('auth:api', ['except' => ['login', 'refresh', 'loginAdmin']]);
+    }
+
+
+    public function loginAdmin()
+    {
+        $credentials = request(['email', 'password']);
+
+        if ( ! $token = auth()->setTTL(60)->attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized rule'], 401);
+        }
+
+        return $this->TokenfromAdmin($token);
     }
 
     /**
@@ -25,7 +37,7 @@ class  AuthController extends Controller
     {
         $credentials = request(['email', 'password']);
 
-        if (! $token = auth()->attempt($credentials)) {
+        if ( ! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -66,7 +78,7 @@ class  AuthController extends Controller
     /**
      * Get the token array structure.
      *
-     * @param  string $token
+     * @param  string  $token
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -74,9 +86,22 @@ class  AuthController extends Controller
     {
         return response()->json([
             'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'token_type'   => 'bearer',
+            'expires_in'   => auth()->factory()->getTTL() * 60,
         ]);
+    }
+
+    protected function TokenfromAdmin($token)
+    {
+        if (auth()->user()->roleId === 1) {
+            return response()->json([
+                'access_token' => $token,
+                'token_type'   => 'bearer',
+                'expires_in'   => auth()->factory()->getTTL(),
+            ]);
+        }
+
+        return response()->json(['error' => 'Unauthorized rule'], 401);
     }
 
 }

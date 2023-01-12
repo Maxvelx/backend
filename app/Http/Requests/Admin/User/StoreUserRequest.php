@@ -31,7 +31,6 @@ class StoreUserRequest extends FormRequest
             'password'     => 'required | min:8 | confirmed',
             'phone_number' => 'string | nullable | unique:users,phone_number',
             'address'      => 'string | nullable',
-            'roleId'       => 'integer',
         ];
     }
 }

@@ -60,6 +60,7 @@ class PartsAutoService
                 unset( $data['brands'] );
             }
             if( !empty( $data['image'] ) ) {
+
                 $imagesIds = $data['image'];
                 unset( $data['images'] );
             }
@@ -77,6 +78,10 @@ class PartsAutoService
                 $part->tags()->attach( $tagsIds );
             }
             if( !empty( $imagesIds ) ) {
+                $partImages = PartsImages::where('part_id', $part->id)->pluck('path_image');
+                foreach ($partImages as $partImage) {
+                    \Storage::disk( 'public' )->delete($partImage);
+                }
                 $part->images()->delete();
                 foreach( $imagesIds as $image ) {
                     $image = \Storage::disk( 'public' )->put( '/image/parts', $image );

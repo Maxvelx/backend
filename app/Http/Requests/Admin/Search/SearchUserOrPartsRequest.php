@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin\Search;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SearchUserRequest extends FormRequest
+class SearchUserOrPartsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,6 +25,7 @@ class SearchUserRequest extends FormRequest
     {
         return [
             'search' => 'string',
+            'page' => '',
         ];
     }
 }

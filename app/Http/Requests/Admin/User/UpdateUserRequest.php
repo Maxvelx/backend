@@ -24,13 +24,12 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'         => 'required | string',
-            'lastName'     => 'string | nullable',
-            'patronymic'   => 'string | nullable',
-            'email'        => 'email | unique:users,email,' . $this->user->id,
-            'phone_number' => 'string | nullable | unique:users,phone_number,' . $this->user->id,
-            'address'      => 'string | nullable',
-            'roleId'       => 'integer',
+            'name'         => 'required|string',
+            'lastName'     => 'string|nullable',
+            'patronymic'   => 'string|nullable',
+            'email'        => 'email|unique:users,email,' . $this->user->id,
+            'phone_number' => 'string|nullable|unique:users,phone_number,' . $this->user->id,
+            'address'      => 'string|nullable',
         ];
     }
 }

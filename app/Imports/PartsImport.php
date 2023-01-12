@@ -7,31 +7,38 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class PartsImport implements ToModel, WithBatchInserts,WithChunkReading
+class PartsImport implements ToModel, WithBatchInserts, WithChunkReading
 {
 
     /**
-     * @param array $row
+     * @param  array  $row
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function model( array $row )
+    public function model(array $row)
     {
-        return new Parts( [
-            'brand_part' => $row[0],
-            'num_part' => $row[1],
-            'num_oem' => $row[1],
-            'name_parts' => $row[2],
-            'quantity' => $row[3],
-            'price_1' => $row[5],
-            'price_currency' => '1',
-//            'distributor' => 'meka',
-        ] );
+        $time = $row['time'];
+        $currency = $row['currency'];
+        $label = $row['label'];
+
+        return new Parts([
+            'brand_part'     => $row['brand'],
+            'num_part'       => $row['number_part'],
+            'num_oem'        => $row['number_oem'],
+            'name_parts'     => $row['name'],
+            'quantity'       => $row['qty'],
+            'price_1'        => $row['price'],
+            'delivery_time'  => $time,
+            'price_currency' => $currency,
+            'label'          => $label,
+        ]);
     }
+
     public function chunkSize(): int
     {
         return 1000;
     }
+
     public function batchSize(): int
     {
         return 1000;

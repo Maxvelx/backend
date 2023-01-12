@@ -6,20 +6,39 @@ use App\Http\Requests\Admin\Parts\StorePartsRequest;
 use App\Http\Requests\Admin\Parts\UpdatePartsRequest;
 use App\Http\Resources\API\client\PartsResource;
 use App\Models\BrandAuto;
-use App\Models\Category;
+use App\Models\BrandParts;
 use App\Models\Parts;
+use App\Models\PartsImages;
+use App\Models\PartsTag;
 use App\Models\Tag;
+use Illuminate\Support\Facades\Cache;
 
 class PartsController extends BaseController
 {
+
+    public static function forgetCaches($prefix)
+    {
+        // Increase loop if you need, the loop will stop when key not found
+        for ($i=1; $i < 1000; $i++) {
+            $key = $prefix . $i;
+            if (Cache::has($key)) {
+                Cache::forget($key);
+            } else {
+                break;
+            }
+        }
+    }
     /**
      * Display a listing of the resource.
      *
      */
     public function index()
     {
-        $parts = Parts::paginate(  20, [ '*' ], 'page');
-        return PartsResource::collection( $parts );
+        $page = request()->page;
+        $parts = Cache::remember('admin_parts'.$page, 60 * 60 * 24, function () {
+            return Parts::orderBy('id', 'desc')->paginate(20, ['*'], 'page');
+        });
+        return PartsResource::collection($parts);
     }
 
     /**
@@ -29,29 +48,31 @@ class PartsController extends BaseController
     public function create()
     {
         $currency   = Parts::getCurrencyStatus();
-        $brandAutos = BrandAuto::where( 'parent_id', '>', 0 )->get();
+        $brandAutos = BrandAuto::where('parent_id', '>', 0)->get();
         $tags       = Tag::all();
-        return [ 'currency' => $currency, 'brand' => $brandAutos, 'tags' => $tags ];
+
+        return ['currency' => $currency, 'brand' => $brandAutos, 'tags' => $tags];
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\Admin\Parts\StorePartsRequest $request
+     * @param  \App\Http\Requests\Admin\Parts\StorePartsRequest  $request
      */
-    public function store( StorePartsRequest $request )
+    public function store(StorePartsRequest $request)
     {
         $data = $request->validated();
-        $this->service->store( $data );
-        return response( status: 200 );
+        $this->service->store($data);
+        self::forgetCaches('admin_parts');
+        return response(status: 200);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Parts $part
+     * @param  \App\Models\Parts  $part
      */
-    public function show( Parts $part )
+    public function show(Parts $part)
     {
         //
     }
@@ -59,38 +80,51 @@ class PartsController extends BaseController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\Parts $part
+     * @param  \App\Models\Parts  $part
      */
-    public function edit( Parts $part )
+    public function edit(Parts $part)
     {
-        $currency   = Parts::getCurrencyStatus();
-        $brandAutos = BrandAuto::tree();
-        $categories = Category::tree();
-        $tags       = Tag::all();
-        $delimiter  = '';
-        return view( 'admin.parts.edit', compact( 'part', 'delimiter', 'categories', 'brandAutos', 'currency', 'tags' ) );
+        $currency         = Parts::getCurrencyStatus();
+        $brandAutos       = BrandAuto::where('parent_id', '>', 0)->get();
+        $tags             = Tag::all();
+        $brandSelected    = BrandParts::where('part_id', $part->id)->get('brand_auto_id');
+        $tagSelected      = PartsTag::where('part_id', $part->id)->get('tag_id');
+        $currencySelected = $part->price_currency;
+
+        return [
+            'currency'    => $currency,
+            'brand'       => $brandAutos,
+            'tags'        => $tags,
+            'brandIds'    => $brandSelected,
+            'tagIds'      => $tagSelected,
+            'currencyIds' => $currencySelected,
+            'partCurrent' => $part,
+        ];
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\Admin\Parts\UpdatePartsRequest $request
-     * @param \App\Models\Parts $parts
+     * @param  \App\Http\Requests\Admin\Parts\UpdatePartsRequest  $request
+     * @param  \App\Models\Parts  $parts
      */
-    public function update( UpdatePartsRequest $request, Parts $part )
+    public function update(UpdatePartsRequest $request, Parts $part)
     {
         $data = $request->validated();
-        $this->service->update( $data, $part );
-        return redirect()->route( 'parts.index' );
+        $this->service->update($data, $part);
+        self::forgetCaches('admin_parts');
+        return response(status: 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Parts $part
+     * @param  \App\Models\Parts  $part
      */
-    public function destroy( Parts $part )
+    public function destroy(Parts $part)
     {
         $part->delete();
+        self::forgetCaches('admin_parts');
+        return response(status: 200);
     }
 }

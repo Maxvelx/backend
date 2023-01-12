@@ -24,7 +24,10 @@ class ImportPartsRequest extends FormRequest
     public function rules()
     {
         return [
-            'file_import' => 'file|required',
+            'file_import'   => 'file|required',
+            'price_currency'=> 'nullable|string|max:255',
+            'delivery_time' => 'nullable|string|max:255',
+            'label'         => 'nullable|string|max:255',
         ];
     }
 }

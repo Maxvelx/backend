@@ -20,6 +20,7 @@ return new class extends Migration
             $table->jsonb( 'parts' );
             $table->float( 'total_price' );
             $table->unsignedSmallInteger( 'payment_status' )->default(1);
+            $table->unsignedSmallInteger( 'delivery_status' )->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

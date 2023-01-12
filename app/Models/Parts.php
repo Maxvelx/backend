@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Parts extends Model
 {
-    use HasFactory, SoftDeletes;
 
     protected $table = 'parts';
 
@@ -56,31 +55,36 @@ class Parts extends Model
     {
         return $this->hasMany(PartsImages::class, 'part_id');
     }
+
     public function tags()
     {
-        return $this->belongsToMany( Tag::class, 'parts_tags','part_id', 'tag_id' );
+        return $this->belongsToMany(Tag::class, 'parts_tags', 'part_id', 'tag_id');
     }
 
     public function getImageUrlFirstAttribute()
     {
-        if($this->images()->value( 'path_image' ) !==  null) {
-            return url( \Storage::url( $this->images()->value( 'path_image' ) ) );
+        if ($this->images()->value('path_image') !== null) {
+            return url(\Storage::url($this->images()->value('path_image')));
         }
 
         return 0;
     }
 
 
-    protected $fillable = [
-        'brand_model_auto_id',
-        'brand_part',
-        'num_part',
-        'num_oem',
-        'name_parts',
-        'quantity',
-        'price_1',
-        'price_2',
-        'price_currency',
-        'category_id',
-    ];
+    protected $fillable
+        = [
+            'brand_model_auto_id',
+            'brand_part',
+            'num_part',
+            'num_oem',
+            'name_parts',
+            'quantity',
+            'price_1',
+            'price_2',
+            'price_currency',
+            'category_id',
+            'delivery_time',
+            'label',
+            'is_published',
+        ];
 }

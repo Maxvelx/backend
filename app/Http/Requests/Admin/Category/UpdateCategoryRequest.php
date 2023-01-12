@@ -24,9 +24,7 @@ class UpdateCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'           => 'required | string',
-            'parent_id'      => 'integer',
-            'image_category' => 'file | nullable',
+            'name' => 'required|string|max:255',
         ];
     }
 }

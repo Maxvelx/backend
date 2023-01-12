@@ -17,6 +17,6 @@ class EditController extends Controller
             'phone_number' => 'required|string|unique:users,phone_number,' . auth()->user()->id,
         ] );
         auth()->user()->update( $data );
-        return response( [ 'message' => 'Користувач оновлений' ] );
+        return response( [ 'message' => 'Ви успішно оновили профіль' ] );
     }
 }
