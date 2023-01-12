@@ -39,7 +39,7 @@ class StorePartsRequest extends FormRequest
             'category_id'    => 'integer|nullable',
             'image[]'        => 'array',
             'image.*'        => 'image',
-            'is_published'   => 'boolean',
+            'is_published'   => 'string',
         ];
     }
 }
