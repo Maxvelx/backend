@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\admin\BrandAuto;
 
 use App\Http\Requests\Admin\BrandAuto\StoreBrandAutoRequest;
 use App\Http\Requests\Admin\BrandAuto\UpdateBrandAutoRequest;
+use App\Http\Resources\API\admin\brand\BrandsResource;
 use App\Models\BrandAuto;
 
 class BrandAutoController extends BaseController
@@ -57,7 +58,7 @@ class BrandAutoController extends BaseController
     public function edit( BrandAuto $brand )
     {
         $mainBrands = BrandAuto::where('parent_id', 0)->get();
-        return [ 'brand' => $brand, 'main' => $mainBrands];
+        return [ 'brand'=> new BrandsResource($brand), 'main' => new BrandsResource($mainBrands)];
 
     }
 

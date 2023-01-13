@@ -20,11 +20,12 @@ class BrandAuto extends Model
 
     public function brandOrModel($parent_id)
     {
-        $brand = [];
-        $brands =  self::where('id', $parent_id)->get();
+        $brand  = [];
+        $brands = self::where('id', $parent_id)->get();
         foreach ($brands as $brandItem) {
             $brand = $brandItem;
         }
+
         return $brand;
     }
 
@@ -33,6 +34,7 @@ class BrandAuto extends Model
         $allBrandAutos  = self::all();
         $rootBrandsAuto = $allBrandAutos->where('parent_id', 0);
         self::formatTree($rootBrandsAuto, $allBrandAutos);
+
         return $rootBrandsAuto;
     }
 
@@ -41,7 +43,7 @@ class BrandAuto extends Model
     {
         foreach ($brandAutos as $brandAuto) {
             $brandAuto->children = $allBrandAutos->where('parent_id', $brandAuto->id)->values();
-            if (!empty($brandAuto->children)) {
+            if ( ! empty($brandAuto->children)) {
                 self::formatTree($brandAuto->children, $allBrandAutos);
             }
         }

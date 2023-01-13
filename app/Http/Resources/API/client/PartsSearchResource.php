@@ -22,7 +22,6 @@ class PartsSearchResource extends JsonResource
             'part_name'   => $this->name_parts,
             'qty'         => $this->quantity,
             'price'       => $this->price_2 ? $this->getPrice( $this )['price_2'] : $this->getPrice( $this )['price_1'],
-            //            'like'            => auth()->user()->GetLikedParts->contains( $this->id )
         ];
     }
 }
