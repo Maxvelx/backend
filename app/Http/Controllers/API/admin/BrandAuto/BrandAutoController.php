@@ -58,8 +58,7 @@ class BrandAutoController extends BaseController
     public function edit( BrandAuto $brand )
     {
         $mainBrands = BrandAuto::where('parent_id', 0)->get();
-        return [ 'brand'=> BrandsResource::collection($brand), 'main' => BrandsResource::collection($mainBrands)];
-
+        return [ 'brand'=>  new BrandsResource($brand), 'main' => BrandsResource::collection($mainBrands)];
     }
 
     /**
