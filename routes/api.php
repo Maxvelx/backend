@@ -51,11 +51,13 @@ Route::group( ['prefix'=>'admin','middleware' => ['jwt.auth','admin'] ], static 
     Route::resource( '/parts', \App\Http\Controllers\API\admin\Parts\PartsController::class );
     Route::resource( '/tags', \App\Http\Controllers\API\admin\Tag\TagController::class );
     Route::resource( '/categories', \App\Http\Controllers\API\admin\Category\CategoryController::class );
+    Route::resource( '/suppliers', \App\Http\Controllers\API\admin\Supplier\SupplierController::class );
     Route::resource( '/users', \App\Http\Controllers\API\admin\User\UserController::class );
 
     Route::get('/settings', \App\Http\Controllers\API\admin\Settings\IndexController::class);
     Route::patch('/settings/update', \App\Http\Controllers\API\admin\Settings\UpdateController::class);
     Route::get('/search', \App\Http\Controllers\API\admin\Search\SearchUserOrPartsController::class);
     Route::post('/import_price', \App\Http\Controllers\API\admin\Settings\Import\PartsImportController::class);
+    Route::post('/import', \App\Http\Controllers\API\admin\Settings\Import\IndexController::class);
 
 } );

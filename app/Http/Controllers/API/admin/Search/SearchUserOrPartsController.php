@@ -17,14 +17,14 @@ class SearchUserOrPartsController extends Controller
 
         $searchData = User::where('phone_number', 'LIKE', $data['search'])
             ->orWhere('name', 'LIKE', $data['search'].'%')
-            ->paginate(20, ['*'], 'page', $data['page']);
+            ->paginate(10, ['*'], 'page', $data['page']);
         if ($searchData->count() > 0) {
             return UserResource::collection($searchData)->additional(['info' => 'users']);
         }
 
         $parts = Parts::where('num_oem', $data['search'])
             ->orWhere('num_part', $data['search'])
-            ->paginate(20, ['*'], 'page', $data['page']);
+            ->paginate(10, ['*'], 'page', $data['page']);
 
         return PartsResource::collection($parts)->additional(['info' => 'parts']);
     }
