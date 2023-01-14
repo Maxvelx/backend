@@ -22,7 +22,7 @@ class ShowShopController extends Controller
             ->paginate(12, ['*'], 'page', $data['page']);
 
         $categories = Category::all();
-        $tags       = Tag::where('model_id', $brand->id)->select('id', 'title', 'label')->get();
+        $tags       = Tag::where('model_id', $brand->id)->select('id', 'title')->get();
 
         return PartsShopResource::collection($parts)
             ->additional([
