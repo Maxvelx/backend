@@ -40,7 +40,7 @@ Route::get( '/index/brands', \App\Http\Controllers\API\client\Index\IndexControl
 Route::get( '/search', \App\Http\Controllers\API\client\SearchController::class );
 Route::get( '/brand', \App\Http\Controllers\API\client\Brands\IndexController::class );
 Route::get( '/brand/{brand}', \App\Http\Controllers\API\client\Brands\ShowController::class );
-Route::post( '/brand/show/{brand}', \App\Http\Controllers\API\client\Brands\ShowShopController::class );
+Route::get( '/brand/show/{brand}', \App\Http\Controllers\API\client\Brands\ShowShopController::class );
 Route::post( '/order', \App\Http\Controllers\API\client\Order\StoreController::class );
 Route::post( '/auth/register', \App\Http\Controllers\API\client\User\RegisterController::class );
 
