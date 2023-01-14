@@ -28,7 +28,7 @@ class TagController extends Controller
      */
     public function create()
     {
-        $brands = BrandAuto::where('parent_id', '!==', 0)->get();
+        $brands = BrandAuto::where('parent_id', '!=', 0)->get();
 
         return BrandForTagsResource::collection($brands);
     }
@@ -62,7 +62,7 @@ class TagController extends Controller
      */
     public function edit(Tag $tag)
     {
-        $brands = BrandAuto::where('parent_id', '!==', 0)->get();
+        $brands = BrandAuto::where('parent_id', '!=', 0)->get();
 
         return ['brands' => BrandForTagsResource::collection($brands),'tag' => $tag];
     }
