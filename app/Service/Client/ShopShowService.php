@@ -42,7 +42,7 @@ class ShopShowService
             ->tagsFilter($data)
             ->get();
 
-        if (!count($partsForCategory)){
+        if ( count($partsForCategory) < 1) {
             return response(status: 204);
         }
 
@@ -71,7 +71,6 @@ class ShopShowService
         }
 
         return $categories;
-
     }
 
     public function getTagsFromParts($parts)
@@ -105,7 +104,8 @@ class ShopShowService
         return $tags;
     }
 
-    public function ResultFilters($parts, $brand, $categories, $tags) {
+    public function ResultFilters($parts, $brand, $categories, $tags)
+    {
         return PartsShopResource::collection($parts)->additional([
             'brand'      => new BrandsResource($brand),
             'categories' => CategoryResource::collection($categories),
