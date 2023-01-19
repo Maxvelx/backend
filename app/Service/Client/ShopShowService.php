@@ -43,7 +43,10 @@ class ShopShowService
             ->get();
 
         if ( count($partsForCategory) < 1) {
-            return response(status: 204);
+            $parts = [];
+            $categories = [];
+            $tags = [];
+            return $this->ResultFilters($parts, $brand, $categories, $tags);
         }
 
         $tags = $this->getTagsFromParts($partsForCategory);
