@@ -21,6 +21,7 @@ class PriceCurrency extends Controller
             $price_1 = ceil($data['price_1']);
         }
 
+
         //Перевіряємо в якій валюті ціна
         if ($data['price_2'] > 0) {
             if ($data['price_currency'] == 1) {
@@ -31,9 +32,10 @@ class PriceCurrency extends Controller
                 //Це якщо ціна FIX заведена в гривні, price_currency = 0
                 $price_2 = ceil($data['price_2']);
             }
+            return $price_2;
         }
 
-        return isset($price_2) ?: $price_1;
+        return $price_1;
     }
 
 }
