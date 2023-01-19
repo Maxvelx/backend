@@ -33,7 +33,7 @@ class PriceCurrency extends Controller
             }
         }
 
-        return $price_2 ?: $price_1;
+        return isset($price_2) ?: $price_1;
     }
 
 }
