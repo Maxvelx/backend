@@ -22,7 +22,6 @@ class ShopShowService
      * @param $brand
      * @param $data
      *
-     * @return AnonymousResourceCollection
      */
     public function filter($brand, $data)
     {
@@ -43,6 +42,9 @@ class ShopShowService
             ->tagsFilter($data)
             ->get();
 
+        if (!$partsForCategory){
+            return response(status: 204);
+        }
 
         $tags = $this->getTagsFromParts($partsForCategory);
 
