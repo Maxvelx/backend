@@ -136,10 +136,6 @@ class PartsController extends BaseController
      */
     public function destroy(Parts $part)
     {
-        $part->tags()->detach();
-        $part->images()->delete();
-        $part->brands()->delete();
-        $part->likes()->delete();
         $part->delete();
         self::forgetCaches('admin_parts');
 

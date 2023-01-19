@@ -42,7 +42,7 @@ class ShopShowService
             ->tagsFilter($data)
             ->get();
 
-        if (count($partsForCategory)){
+        if (!count($partsForCategory)){
             return response(status: 204);
         }
 
