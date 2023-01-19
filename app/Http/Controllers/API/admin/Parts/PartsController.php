@@ -38,7 +38,9 @@ class PartsController extends BaseController
     {
         $page  = request()->page;
         $parts = Cache::remember('admin_parts'.$page, 60 * 60 * 24, function () {
-            return Parts::orderBy('id', 'desc')->paginate(20, ['*'], 'page');
+            return Parts::orderBy('id', 'desc')
+                ->whereNull('label')
+                ->paginate(20, ['*'], 'page');
         });
 
         return PartsResource::collection($parts);
