@@ -26,6 +26,8 @@ class PartsAutoService
                 unset( $data['tags'] );
             }
 
+            $data['price_show'] = Parts::getPrice($data);
+
             $part = Parts::firstOrCreate( $data );
 
             if( !empty( $brandIds ) ) {
@@ -69,13 +71,15 @@ class PartsAutoService
                 unset( $data['tags'] );
             }
 
+            $data['price_show'] = Parts::getPrice($data);
+
             $part->update( $data );
 
             if( !empty( $brandIds ) ) {
                 $part->brands()->sync( $brandIds );
             }
             if( !empty( $tagsIds ) ) {
-                $part->tags()->attach( $tagsIds );
+                $part->tags()->sync( $tagsIds );
             }
             if( !empty( $imagesIds ) ) {
                 $partImages = PartsImages::where('part_id', $part->id)->pluck('path_image');

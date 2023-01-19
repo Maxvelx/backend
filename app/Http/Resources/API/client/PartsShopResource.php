@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\API\client;
 
+use App\Http\Resources\API\admin\tag\TagResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PartsShopResource extends JsonResource
@@ -23,11 +24,9 @@ class PartsShopResource extends JsonResource
             'part_number_oem' => $this->num_oem,
             'part_name'       => $this->name_parts,
             'qty'             => $this->quantity,
-            'price'           => $this->price_2
-                ? $this->getPrice($this)['price_2']
-                : $this->getPrice($this)['price_1'],
+            'price'           => $this->getPriceWithCoefficient($this->price_show),
             'image'           => $this->imageUrlFirst,
-            'tags'            => $this->tags,
+            'tags'            => TagResource::collection($this->tags),
         ];
     }
 }

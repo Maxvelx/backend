@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\PriceCoefCurrency;
 use App\Http\Controllers\PriceCurrency;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Parts extends Model
 {
-
     protected $table = 'parts';
 
     const PRICE_UAH  = 0;
@@ -29,9 +29,15 @@ class Parts extends Model
         return self::getCurrencyStatus()[$this->price_currency];
     }
 
-    public function getPrice($part)
+    public static function getPrice($data)
     {
-        return PriceCurrency::getCurrencyPrice($part);
+        return PriceCurrency::getCurrencyPrice($data);
+    }
+
+
+    public static function getPriceWithCoefficient($price_show)
+    {
+        return PriceCoefCurrency::getPriceWithCoef($price_show);
     }
 
     public function category()
@@ -68,7 +74,6 @@ class Parts extends Model
         return 0;
     }
 
-
     protected $fillable
         = [
             'brand_model_auto_id',
@@ -84,5 +89,49 @@ class Parts extends Model
             'delivery_time',
             'label',
             'is_published',
+            'price_show',
         ];
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_published', 'true');
+    }
+
+    public function scopeCategoryFilter($query, $data)
+    {
+        return $query->when(isset($data['category_id']), function ($query) use ($data) {
+            $query->where('category_id', $data['category_id']);
+        });
+    }
+
+    public function scopeTagsFilter($query, $data)
+    {
+        return $query->when(count($data['tags']) > 0, function ($query) use ($data) {
+            $query->whereHas('tags', function ($query) use ($data) {
+                $query->whereIn('tag_id', $data['tags']);
+            });
+        });
+    }
+
+    public function scopeSortPriceAsc($query, $data)
+    {
+        return $query->when(isset($data['orderBy']) && $data['orderBy'] == 1, function ($query) {
+            $query->orderBy('price_show', 'ASC');
+        });
+    }
+
+    public function scopeSortPriceDesc($query, $data)
+    {
+        return $query->when(isset($data['orderBy']) && $data['orderBy'] == 2, function ($query) {
+            $query->orderByDesc('price_show');
+        });
+    }
+
+    public function scopeNewest($query, $data)
+    {
+        return $query->when(isset($data['orderBy']) && $data['orderBy'] == 3, function ($query) {
+            $query->latest();
+        });
+    }
+
 }

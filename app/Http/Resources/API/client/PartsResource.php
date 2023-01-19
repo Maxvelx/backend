@@ -25,9 +25,7 @@ class PartsResource extends JsonResource
             'part_number_oem' => $this->num_oem,
             'part_name'       => $this->name_parts,
             'qty'             => $this->quantity,
-            'price'           => $this->price_2
-                ? $this->getPrice($this)['price_2']
-                : $this->getPrice($this)['price_1'],
+            'price'           => $this->getPriceWithCoefficient($this->price_show),
             'image'           => $this->imageUrlFirst,
         ];
     }

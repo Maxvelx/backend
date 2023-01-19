@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\Parts\UpdatePartsRequest;
 use App\Http\Resources\API\client\PartsResource;
 use App\Models\BrandAuto;
 use App\Models\BrandParts;
+use App\Models\Category;
 use App\Models\Parts;
 use App\Models\PartsImages;
 use App\Models\PartsTag;
@@ -19,8 +20,8 @@ class PartsController extends BaseController
     public static function forgetCaches($prefix)
     {
         // Increase loop if you need, the loop will stop when key not found
-        for ($i=1; $i < 1000; $i++) {
-            $key = $prefix . $i;
+        for ($i = 1; $i < 1000; $i++) {
+            $key = $prefix.$i;
             if (Cache::has($key)) {
                 Cache::forget($key);
             } else {
@@ -28,16 +29,18 @@ class PartsController extends BaseController
             }
         }
     }
+
     /**
      * Display a listing of the resource.
      *
      */
     public function index()
     {
-        $page = request()->page;
+        $page  = request()->page;
         $parts = Cache::remember('admin_parts'.$page, 60 * 60 * 24, function () {
             return Parts::orderBy('id', 'desc')->paginate(20, ['*'], 'page');
         });
+
         return PartsResource::collection($parts);
     }
 
@@ -48,10 +51,16 @@ class PartsController extends BaseController
     public function create()
     {
         $currency   = Parts::getCurrencyStatus();
-        $brandAutos = BrandAuto::where('parent_id', '>', 0)->get();
-        $tags       = Tag::all();
+        $brandAutos = BrandAuto::where('parent_id', '>', 0)->get(['id', 'brand_auto']);
+        $tags       = Tag::get(['id', 'title']);
+        $categories = Category::get(['id', 'name']);
 
-        return ['currency' => $currency, 'brand' => $brandAutos, 'tags' => $tags];
+        return [
+            'currency'   => $currency,
+            'brand'      => $brandAutos,
+            'tags'       => $tags,
+            'categories' => $categories,
+        ];
     }
 
     /**
@@ -64,6 +73,7 @@ class PartsController extends BaseController
         $data = $request->validated();
         $this->service->store($data);
         self::forgetCaches('admin_parts');
+
         return response(status: 200);
     }
 
@@ -85,8 +95,9 @@ class PartsController extends BaseController
     public function edit(Parts $part)
     {
         $currency         = Parts::getCurrencyStatus();
-        $brandAutos       = BrandAuto::where('parent_id', '>', 0)->get();
-        $tags             = Tag::all();
+        $brandAutos       = BrandAuto::where('parent_id', '>', 0)->get(['id', 'brand_auto']);
+        $tags             = Tag::get(['id', 'title']);
+        $categories       = Category::get(['id', 'name']);
         $brandSelected    = BrandParts::where('part_id', $part->id)->get('brand_auto_id');
         $tagSelected      = PartsTag::where('part_id', $part->id)->get('tag_id');
         $currencySelected = $part->price_currency;
@@ -99,6 +110,7 @@ class PartsController extends BaseController
             'tagIds'      => $tagSelected,
             'currencyIds' => $currencySelected,
             'partCurrent' => $part,
+            'categories'  => $categories,
         ];
     }
 
@@ -113,6 +125,7 @@ class PartsController extends BaseController
         $data = $request->validated();
         $this->service->update($data, $part);
         self::forgetCaches('admin_parts');
+
         return response(status: 200);
     }
 
@@ -123,8 +136,13 @@ class PartsController extends BaseController
      */
     public function destroy(Parts $part)
     {
+        $part->tags()->detach();
+        $part->images()->delete();
+        $part->brands()->delete();
+        $part->likes()->delete();
         $part->delete();
         self::forgetCaches('admin_parts');
+
         return response(status: 200);
     }
 }

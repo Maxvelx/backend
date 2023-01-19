@@ -12,6 +12,11 @@ class Category extends Model
     protected $table   = 'categories';
     protected $guarded = false;
 
+    public function parts()
+    {
+        return $this->hasMany(Parts::class);
+    }
+
     public static function tree()
     {
         $allCategories  = self::all();

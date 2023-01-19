@@ -21,7 +21,7 @@ return new class extends Migration {
             $table->string('name_parts')->nullable();
             $table->string('quantity')->nullable();
             $table->float('price_1')->nullable();
-            $table->float('price_2')->nullable();
+            $table->float('price_2')->nullable()->default(0);
             $table->integer('price_currency')->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
             $table->string('delivery_time')->nullable();

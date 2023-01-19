@@ -23,7 +23,7 @@ class PartsSearchResource extends JsonResource
             'part_name'   => $this->name_parts,
             'qty'         => $this->quantity,
             'time'        => $this->delivery_time,
-            'price'       => $this->price_2 ? $this->getPrice($this)['price_2'] : $this->getPrice($this)['price_1'],
+            'price'       => $this->getPriceWithCoefficient($this->price_show),
         ];
     }
 }

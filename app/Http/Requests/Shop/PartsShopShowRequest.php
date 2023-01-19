@@ -24,7 +24,10 @@ class PartsShopShowRequest extends FormRequest
     public function rules()
     {
         return [
-            'page'  => '',
+            'page'        => 'max:100',
+            'category_id' => 'nullable|max:100',
+            'orderBy'     => 'nullable|max:255',
+            'tags'        => 'array',
         ];
     }
 }
