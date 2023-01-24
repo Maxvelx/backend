@@ -36,9 +36,14 @@ class Parts extends Model
     }
 
 
-    public static function getPriceWithCoefficient($price_show)
+    public static function getPriceWithCoefficient($part)
     {
-        return PriceCoefCurrency::getPriceWithCoef($price_show);
+        return PriceCoefCurrency::getPriceWithCoef($part);
+    }
+
+    public static function getPriceWithCoefficientWoutConvert($price_show)
+    {
+        return PriceCoefCurrency::getPriceWithCoefWoutConvert($price_show);
     }
 
     public function category()

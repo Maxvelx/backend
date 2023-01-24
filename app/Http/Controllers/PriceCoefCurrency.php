@@ -25,4 +25,10 @@ class PriceCoefCurrency extends Controller
         return ceil($price_show * $coef);
     }
 
+    public static function getPriceWithCoefWoutConvert($price_show)
+    {
+        $coef = DB::table('settings')->value('coef');
+        return ceil($price_show * $coef);
+    }
+
 }
