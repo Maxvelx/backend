@@ -80,6 +80,9 @@ class BrandAutoController extends BaseController
      */
     public function destroy( BrandAuto $brand )
     {
+        if ($brand->image_brand) {
+            \Storage::disk('public')->delete($brand->image_brand);
+        }
         $brand->delete();
     }
 }
