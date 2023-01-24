@@ -97,6 +97,7 @@ class GarageController extends BaseController
      */
     public function destroy(Garage $garage)
     {
+
         if (auth()->user()) {
             if ($garage->image) {
                 \Storage::disk('public')->delete($garage->image);
