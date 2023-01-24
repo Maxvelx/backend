@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API\client\Garage;
 
 use App\Http\Requests\Personal\Garage\StoreGarageRequest;
 use App\Http\Requests\Personal\Garage\UpdateGarageRequest;
-use App\Http\Resources\API\Client\Garage\GarageResource;
+use App\Http\Resources\API\client\Garage\GarageResource;
 use App\Models\Garage;
 use Illuminate\Http\Request;
 
