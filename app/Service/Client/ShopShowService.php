@@ -98,7 +98,7 @@ class ShopShowService
             foreach ($count as $key => $item) {
                 foreach ($tags as $tag) {
                     if ($tag->id === $key) {
-                        $tag['count'] = $item;
+                        $tag['count'] = $item ? $item : 0;
                     }
                 }
             }
