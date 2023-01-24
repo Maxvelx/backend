@@ -40,7 +40,9 @@ class GarageAutoService
             if ( ! empty($data['image'])) {
                 $image = $data['image'];
                 $path  = $image->hashName();
-                \Storage::disk('public')->delete($garage->image);
+                if ($garage->image) {
+                    \Storage::disk('public')->delete($garage->image);
+                }
                 Image::make($image)->resize(null, 400, function ($constraint) {
                     $constraint->aspectRatio();
                 })->save(storage_path('app/public/image/garage/'.$path));
