@@ -25,9 +25,10 @@ class PartsImport implements ToModel, WithBatchInserts, WithChunkReading, WithHe
      */
     public function model(array $row)
     {
-        $delivery_time = $this->data['delivery_time'];
+        $delivery_time  = $this->data['delivery_time'];
         $price_currency = $this->data['price_currency'];
-        $label = $this->data['label'];
+        $label          = $this->data['label'];
+        $convert        = $this->data['convert'];
 
         return new Parts([
             'brand_part'     => $row['brand'],
@@ -35,9 +36,11 @@ class PartsImport implements ToModel, WithBatchInserts, WithChunkReading, WithHe
             'name_parts'     => $row['name'],
             'quantity'       => $row['qty'],
             'price_1'        => $row['price'],
+            'price_show'     => $row['price'],
             'delivery_time'  => $delivery_time,
             'price_currency' => $price_currency,
             'label'          => $label,
+            'convert'        => $convert,
         ]);
     }
 
@@ -50,8 +53,6 @@ class PartsImport implements ToModel, WithBatchInserts, WithChunkReading, WithHe
     {
         return 1000;
     }
-
-
 
 
 }

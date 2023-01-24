@@ -10,15 +10,23 @@ use App\Models\User;
 
 class StoreController extends Controller
 {
-    public function __invoke( StoreOrderRequest $request )
+    public function __invoke(StoreOrderRequest $request)
     {
         $data = $request->validated();
-        if( auth()->user() ) {
+        if (auth()->user()) {
             $user = auth()->user();
+            auth()->user()->update(
+                [
+                    'name'         => $data['name'],
+                    'lastName'     => $data['lastName'],
+                    'patronymic'   => $data['patronymic'],
+                    'phone_number' => $data['phone_number'],
+                    'address'      => $data['address'],
+                ]);
         } else {
-            $data['password'] = \Hash::make( $data['password'] );
-            $user = User::firstOrCreate(
-                [ 'email' => $data['email'] ],
+            $data['password'] = \Hash::make($data['password']);
+            $user             = User::firstOrCreate(
+                ['email' => $data['email']],
                 [
                     'name'         => $data['name'],
                     'password'     => $data['password'],
@@ -26,15 +34,15 @@ class StoreController extends Controller
                     'patronymic'   => $data['patronymic'],
                     'phone_number' => $data['phone_number'],
                     'address'      => $data['address'],
-                ] );
+                ]);
         }
 
-        $order = Order::create( [
+        $order = Order::create([
             'user_id'      => $user->id,
-            'parts'        => json_encode( $data['parts'] ),
-            'total_price'  => $data['total_price'],
+            'parts'        => json_encode($data['parts']),
             'order_number' => fake()->randomNumber(6, true),
-        ] );
-        return new OrderResource( $order );
+        ]);
+
+        return new OrderResource($order);
     }
 }

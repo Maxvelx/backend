@@ -49,7 +49,7 @@ class ShopShowService
             return $this->ResultFilters($parts, $brand, $categories, $tags);
         }
 
-        $tags = $this->getTagsFromParts($partsForCategory);
+        $tags = $this->getTagsFromParts($partsForCategory, $brand);
 
         $categories = $this->getCategoryFromParts($partsForCategory);
 
@@ -76,7 +76,7 @@ class ShopShowService
         return $categories;
     }
 
-    public function getTagsFromParts($parts)
+    public function getTagsFromParts($parts, $brand)
     {
         $tags = [];
         foreach ($parts as $part) {
@@ -93,7 +93,7 @@ class ShopShowService
 
             $count = array_count_values($this->tagsID);
 
-            $tags = Tag::whereIn('id', $this->tagsID)->get();
+            $tags = Tag::where('model_id', $brand->id)->get();
 
             foreach ($count as $key => $item) {
                 foreach ($tags as $tag) {

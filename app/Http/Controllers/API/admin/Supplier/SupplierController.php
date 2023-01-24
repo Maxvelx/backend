@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API\admin\Supplier;
 
 use App\Http\Controllers\Controller;
+use App\Imports\PartsImport;
+use App\Models\Parts;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,8 @@ class SupplierController extends Controller
 
     public function index()
     {
-        return Supplier::select('title','id')->orderBy('id', 'desc')->paginate(10, ['*'], 'page');
+        return Supplier::select('canDelivery','convert', 'title', 'id')->orderBy('id', 'desc')
+            ->paginate(10, ['*'], 'page');
     }
 
     /**
@@ -24,8 +27,13 @@ class SupplierController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate(['title'=>'required|string|max:255']);
+        $data = $request->validate([
+            'title'       => 'required|string|max:255',
+            'convert'     => 'required|max:255',
+            'canDelivery' => 'required|max:255',
+        ]);
         Supplier::firstOrCreate($data);
+        Parts::where('label', $data['title'])->update(['convert' => $data['convert']]);
 
         return response(status: 201);
     }
@@ -33,20 +41,30 @@ class SupplierController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Models\Supplier $category
+     * @param  \App\Models\Supplier  $category
      */
 
     public function update(Request $request, Supplier $supplier)
     {
-        $data = $request->validate(['title'=>'required|string|max:255']);
+        $data = $request->validate([
+            'title'   => 'required|string|max:255',
+            'convert' => 'required|max:255',
+            'canDelivery' => 'required|max:255',
+        ]);
+
         $supplier->update($data);
+
+        if ($supplier->convert != $data['convert']) {
+            Parts::where('label', $data['title'])->update(['convert' => $data['convert']]);
+        }
+
         return response(status: 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Supplier $category
+     * @param  \App\Models\Supplier  $category
      */
 
     public function destroy(Supplier $supplier)

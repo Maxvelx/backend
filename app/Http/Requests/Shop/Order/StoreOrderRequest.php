@@ -25,16 +25,15 @@ class StoreOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'           => '',
-            'email'          => '',
-            'password'       => '',
-            'lastName'       => '',
-            'patronymic'     => '',
-            'phone_number'   => '',
-            'address'        => '',
+            'name'           => 'required|string|max:255',
+            'email'          => 'required|string|max:255',
+            'password'       => 'nullable|string|max:255',
+            'lastName'       => 'required|string|max:255',
+            'patronymic'     => 'required|string|max:255',
+            'phone_number'   => 'required|string|max:255',
+            'address'        => 'required|string|max:255',
             'user_id'        => 'nullable',
             'parts'          => 'required|array',
-            'total_price'    => 'required',
             'payment_status' => 'nullable',
         ];
     }

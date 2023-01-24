@@ -19,6 +19,7 @@ class TagResource extends JsonResource
         return [
             'id'    => $this->id,
             'title' => $this->title,
+            'model' => BrandAuto::where('id', $this->model_id)->value('brand_auto'),
         ];
     }
 }

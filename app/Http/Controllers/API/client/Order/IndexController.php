@@ -11,7 +11,7 @@ class IndexController extends Controller
     public function __invoke()
     {
         $userId = auth()->user()->id;
-        $order = Order::where( 'user_id', $userId)->paginate(10);
+        $order = Order::where( 'user_id', $userId)->paginate(6);
         return OrderResource::collection( $order );
     }
 }

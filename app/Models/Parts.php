@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Parts extends Model
 {
     protected $table = 'parts';
+    protected $guarded = false;
 
     const PRICE_UAH  = 0;
     const PRICE_USD  = 1;
@@ -74,23 +75,23 @@ class Parts extends Model
         return 0;
     }
 
-    protected $fillable
-        = [
-            'brand_model_auto_id',
-            'brand_part',
-            'num_part',
-            'num_oem',
-            'name_parts',
-            'quantity',
-            'price_1',
-            'price_2',
-            'price_currency',
-            'category_id',
-            'delivery_time',
-            'label',
-            'is_published',
-            'price_show',
-        ];
+//    protected $fillable
+//        = [
+//            'brand_model_auto_id',
+//            'brand_part',
+//            'num_part',
+//            'num_oem',
+//            'name_parts',
+//            'quantity',
+//            'price_1',
+//            'price_2',
+//            'price_currency',
+//            'category_id',
+//            'delivery_time',
+//            'label',
+//            'is_published',
+//            'price_show',
+//        ];
 
     public function scopeActive($query)
     {

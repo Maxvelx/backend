@@ -24,9 +24,10 @@ class PartsShopResource extends JsonResource
             'part_number_oem' => $this->num_oem,
             'part_name'       => $this->name_parts,
             'qty'             => $this->quantity,
-            'price'           => $this->getPriceWithCoefficient($this->price_show),
+            'price'           => $this->getPriceWithCoefficient($this),
             'image'           => $this->imageUrlFirst,
             'tags'            => TagResource::collection($this->tags),
+            'currency'        => PriceResource::getCurrency($this),
         ];
     }
 }

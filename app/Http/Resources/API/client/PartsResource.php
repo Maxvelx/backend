@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\API\client;
 
+use App\Models\Supplier;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PartsResource extends JsonResource
@@ -18,6 +19,8 @@ class PartsResource extends JsonResource
     function toArray(
         $request
     ) {
+        $canDelivery = Supplier::where('title', $this->label)->value('canDelivery');
+
         return [
             'id'              => $this->id,
             'part_brand'      => $this->brand_part,
@@ -25,8 +28,11 @@ class PartsResource extends JsonResource
             'part_number_oem' => $this->num_oem,
             'part_name'       => $this->name_parts,
             'qty'             => $this->quantity,
-            'price'           => $this->getPriceWithCoefficient($this->price_show),
+            'price'           => $this->getPriceWithCoefficient($this),
             'image'           => $this->imageUrlFirst,
+            'currency'        => PriceResource::getCurrency($this),
+            'label'           => $this->label,
+            'canDelivery'     => $canDelivery == 0 ? 'no' : 'yes',
         ];
     }
 }

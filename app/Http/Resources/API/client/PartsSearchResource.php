@@ -15,6 +15,7 @@ class PartsSearchResource extends JsonResource
      */
     public function toArray($request)
     {
+
         return [
             'id'          => $this->id,
             'part_brand'  => $this->brand_part,
@@ -23,7 +24,9 @@ class PartsSearchResource extends JsonResource
             'part_name'   => $this->name_parts,
             'qty'         => $this->quantity,
             'time'        => $this->delivery_time,
-            'price'       => $this->getPriceWithCoefficient($this->price_show),
+            'price'       => $this->convert == 1 ? $this->getPriceWithCoefficient($this)
+                : $this->price_show,
+            'currency'    => PriceResource::getCurrency($this),
         ];
     }
 }
