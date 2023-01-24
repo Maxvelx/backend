@@ -17,18 +17,18 @@ use Illuminate\Support\Facades\Cache;
 class PartsController extends BaseController
 {
 
-    public static function forgetCaches($prefix)
-    {
-        // Increase loop if you need, the loop will stop when key not found
-        for ($i = 1; $i < 1000; $i++) {
-            $key = $prefix.$i;
-            if (Cache::has($key)) {
-                Cache::forget($key);
-            } else {
-                break;
-            }
-        }
-    }
+//    public static function forgetCaches($prefix)
+//    {
+//        // Increase loop if you need, the loop will stop when key not found
+//        for ($i = 1; $i < 1000; $i++) {
+//            $key = $prefix.$i;
+//            if (Cache::has($key)) {
+//                Cache::forget($key);
+//            } else {
+//                break;
+//            }
+//        }
+//    }
 
     /**
      * Display a listing of the resource.
@@ -37,11 +37,12 @@ class PartsController extends BaseController
     public function index()
     {
         $page  = request()->page;
-        $parts = Cache::remember('admin_parts'.$page, 60 * 60 * 24, function () {
-            return Parts::orderBy('id', 'desc')
+//        $parts = Cache::remember('admin_parts'.$page, 60 * 60 * 24, function () {
+            $parts = Parts::orderBy('id', 'desc')
                 ->whereNull('label')
+                ->orWhere('is_published', 'true')
                 ->paginate(20, ['*'], 'page');
-        });
+//        });
 
         return PartsResource::collection($parts);
     }
@@ -74,7 +75,7 @@ class PartsController extends BaseController
     {
         $data = $request->validated();
         $this->service->store($data);
-        self::forgetCaches('admin_parts');
+//        self::forgetCaches('admin_parts');
 
         return response(status: 200);
     }
@@ -126,7 +127,7 @@ class PartsController extends BaseController
     {
         $data = $request->validated();
         $this->service->update($data, $part);
-        self::forgetCaches('admin_parts');
+//        self::forgetCaches('admin_parts');
 
         return response(status: 200);
     }
@@ -139,7 +140,7 @@ class PartsController extends BaseController
     public function destroy(Parts $part)
     {
         $part->delete();
-        self::forgetCaches('admin_parts');
+//        self::forgetCaches('admin_parts');
 
         return response(status: 200);
     }
