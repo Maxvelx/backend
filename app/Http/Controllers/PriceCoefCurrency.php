@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Supplier;
 use Illuminate\Support\Facades\DB;
 
 class PriceCoefCurrency extends Controller
@@ -9,6 +10,7 @@ class PriceCoefCurrency extends Controller
     public static function getPriceWithCoef($part)
     {
         $coef = DB::table('settings')->value('coef');
+        $coef2 = Supplier::where('title', $part->label)->value('coefficient');
         $usd  = DB::table('settings')->value('usd');
         $euro = DB::table('settings')->value('euro');
 
@@ -22,13 +24,28 @@ class PriceCoefCurrency extends Controller
             $price_show = ceil($part->price_show);
         }
 
+        if ($part->price_2 > 0){
+            return ceil($price_show);
+        }
+        if ($coef2 > 0){
+            return ceil($part->price_show * $coef2);
+        }
+
         return ceil($price_show * $coef);
     }
 
-    public static function getPriceWithCoefWoutConvert($price_show)
+    public static function getPriceWithCoefWoutConvert($part)
     {
         $coef = DB::table('settings')->value('coef');
-        return ceil($price_show * $coef);
+        $coef2 = Supplier::where('title', $part->label)->value('coefficient');
+
+        if ($part->price_2 > 0){
+            return ceil($part->price_show);
+        }
+        if ($coef2 > 0){
+            return ceil($part->price_show * $coef2);
+        }
+        return ceil($part->price_show * $coef);
     }
 
 }

@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Resources\API\client;
+namespace App\Http\Resources\API\admin\parts;
 
+use App\Http\Resources\API\client\PriceResource;
 use App\Models\Supplier;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PartsResource extends JsonResource
+class PartsAdminResource extends JsonResource
 {
 
     /**
@@ -28,7 +29,10 @@ class PartsResource extends JsonResource
             'part_number_oem' => $this->num_oem,
             'part_name'       => $this->name_parts,
             'qty'             => $this->quantity,
-            'price'           => $this->convert == 1 || $this->is_published ? $this->getPriceWithCoefficient($this)
+            'price_1'         => $this->price_1,
+            'currency_1'      => PriceResource::getCurrency($this),
+            'price'           => $this->convert == 1 || $this->is_published
+                ? $this->getPriceWithCoefficient($this)
                 : $this->getPriceWithCoefficientWoutConvert($this),
             'image'           => $this->imageUrlFirst,
             'currency'        => $this->is_published ? 'грн' : PriceResource::getCurrency($this),

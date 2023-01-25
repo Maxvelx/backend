@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\admin\Parts;
 
 use App\Http\Requests\Admin\Parts\StorePartsRequest;
 use App\Http\Requests\Admin\Parts\UpdatePartsRequest;
+use App\Http\Resources\API\admin\parts\PartsAdminResource;
 use App\Http\Resources\API\client\PartsResource;
 use App\Models\BrandAuto;
 use App\Models\BrandParts;
@@ -44,7 +45,7 @@ class PartsController extends BaseController
                 ->paginate(20, ['*'], 'page');
 //        });
 
-        return PartsResource::collection($parts);
+        return PartsAdminResource::collection($parts);
     }
 
     /**

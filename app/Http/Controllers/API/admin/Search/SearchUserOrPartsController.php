@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API\admin\Search;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Search\SearchUserOrPartsRequest;
-use App\Http\Resources\API\client\PartsResource;
+use App\Http\Resources\API\admin\parts\PartsAdminResource;
 use App\Http\Resources\API\client\Personal\UserResource;
 use App\Models\Parts;
 use App\Models\User;
@@ -26,6 +26,6 @@ class SearchUserOrPartsController extends Controller
             ->orWhere('num_part', $data['search'])
             ->paginate(10, ['*'], 'page', $data['page']);
 
-        return PartsResource::collection($parts)->additional(['info' => 'parts']);
+        return PartsAdminResource::collection($parts)->additional(['info' => 'parts']);
     }
 }

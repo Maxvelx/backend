@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Http\Controllers\PriceCoefCurrency;
-use App\Http\Controllers\PriceCurrency;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -30,20 +29,14 @@ class Parts extends Model
         return self::getCurrencyStatus()[$this->price_currency];
     }
 
-    public static function getPrice($data)
-    {
-        return PriceCurrency::getCurrencyPrice($data);
-    }
-
-
     public static function getPriceWithCoefficient($part)
     {
         return PriceCoefCurrency::getPriceWithCoef($part);
     }
 
-    public static function getPriceWithCoefficientWoutConvert($price_show)
+    public static function getPriceWithCoefficientWoutConvert($part)
     {
-        return PriceCoefCurrency::getPriceWithCoefWoutConvert($price_show);
+        return PriceCoefCurrency::getPriceWithCoefWoutConvert($part);
     }
 
     public function category()

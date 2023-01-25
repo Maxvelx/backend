@@ -16,7 +16,7 @@ class SupplierController extends Controller
 
     public function index()
     {
-        return Supplier::select('canDelivery','convert', 'title', 'id')->orderBy('id', 'desc')
+        return Supplier::select('coefficient','canDelivery','convert', 'title', 'id')->orderBy('id', 'desc')
             ->paginate(10, ['*'], 'page');
     }
 
@@ -31,11 +31,12 @@ class SupplierController extends Controller
             'title'       => 'required|string|max:255',
             'convert'     => 'required|max:255',
             'canDelivery' => 'required|max:255',
+            'coefficient' => 'required|max:255'
         ]);
         Supplier::firstOrCreate($data);
         Parts::where('label', $data['title'])->update(['convert' => $data['convert']]);
 
-        return response(status: 201);
+        return response(status: 200);
     }
 
     /**
@@ -50,6 +51,7 @@ class SupplierController extends Controller
             'title'   => 'required|string|max:255',
             'convert' => 'required|max:255',
             'canDelivery' => 'required|max:255',
+            'coefficient' => 'required|max:255'
         ]);
 
         $supplier->update($data);
