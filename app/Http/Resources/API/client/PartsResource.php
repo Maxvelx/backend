@@ -28,7 +28,8 @@ class PartsResource extends JsonResource
             'part_number_oem' => $this->num_oem,
             'part_name'       => $this->name_parts,
             'qty'             => $this->quantity,
-            'price'           => $this->getPriceWithCoefficient($this),
+            'price'           => $this->convert == 1 || $this->is_published ? $this->getPriceWithCoefficient($this)
+                : $this->getPriceWithCoefficientWoutConvert($this->price_show),
             'image'           => $this->imageUrlFirst,
             'currency'        => $this->is_published ? 'грн' : PriceResource::getCurrency($this),
             'label'           => $this->label,
