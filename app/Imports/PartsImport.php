@@ -34,7 +34,7 @@ class PartsImport implements ToModel, WithBatchInserts, WithChunkReading, WithHe
             'brand_part'     => $row['brand'],
             'num_part'       => $row['number'],
             'name_parts'     => $row['name'],
-            'quantity'       => $row['qty'],
+            'quantity'       => $row['qty'] ? $row['qty'] : 0,
             'price_1'        => $row['price'],
             'price_show'     => $row['price'],
             'delivery_time'  => $delivery_time,
