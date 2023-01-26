@@ -26,7 +26,7 @@ class PartsSearchResource extends JsonResource
             'time'        => $this->delivery_time,
             'price'       => $this->convert == 1 || $this->is_published ? $this->getPriceWithCoefficient($this)
                 : $this->getPriceWithCoefficientWoutConvert($this),
-            'currency'    => $this->is_published ? 'грн' : PriceResource::getCurrency($this),
+            'currency'    => $this->is_published ? '₴' : $this->currencyName,
         ];
     }
 }

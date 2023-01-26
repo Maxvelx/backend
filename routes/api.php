@@ -42,6 +42,7 @@ Route::get( '/index/brands', \App\Http\Controllers\API\client\Index\IndexControl
 Route::get( '/search', \App\Http\Controllers\API\client\SearchController::class );
 Route::get( '/brand', \App\Http\Controllers\API\client\Brands\IndexController::class );
 Route::get( '/brand/{brand}', \App\Http\Controllers\API\client\Brands\ShowController::class );
+Route::get( '/delivery_companies', \App\Http\Controllers\API\client\DeliveryCompanies\IndexController::class);
 Route::post( '/brand/show/{brand}', \App\Http\Controllers\API\client\Brands\ShowShopController::class );
 Route::post( '/order', \App\Http\Controllers\API\client\Order\StoreController::class );
 Route::post( '/auth/register', \App\Http\Controllers\API\client\User\RegisterController::class );
@@ -53,6 +54,7 @@ Route::group( ['prefix'=>'admin','middleware' => ['jwt.auth','admin'] ], static 
     Route::resource( '/tags', \App\Http\Controllers\API\admin\Tag\TagController::class );
     Route::resource( '/categories', \App\Http\Controllers\API\admin\Category\CategoryController::class );
     Route::resource( '/suppliers', \App\Http\Controllers\API\admin\Supplier\SupplierController::class );
+    Route::resource( '/delivery_company', \App\Http\Controllers\API\admin\DeliveryCompanies\DeliveryCompanyController::class );
     Route::resource( '/users', \App\Http\Controllers\API\admin\User\UserController::class );
 
     Route::get('/settings', \App\Http\Controllers\API\admin\Settings\IndexController::class);

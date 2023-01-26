@@ -31,7 +31,7 @@ class PartsResource extends JsonResource
             'price'           => $this->convert == 1 || $this->is_published ? $this->getPriceWithCoefficient($this)
                 : $this->getPriceWithCoefficientWoutConvert($this),
             'image'           => $this->imageUrlFirst,
-            'currency'        => $this->is_published ? 'грн' : PriceResource::getCurrency($this),
+            'currency'        => $this->is_published ? '₴' : $this->currencyName,
             'label'           => $this->label,
             'canDelivery'     => $canDelivery == 0 ? 'no' : 'yes',
         ];

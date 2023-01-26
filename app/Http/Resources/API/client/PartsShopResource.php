@@ -27,7 +27,7 @@ class PartsShopResource extends JsonResource
             'price'           => $this->getPriceWithCoefficient($this),
             'image'           => $this->imageUrlFirst,
             'tags'            => TagResource::collection($this->tags),
-            'currency'        => $this->is_published ? 'грн' : PriceResource::getCurrency($this),
+            'currency'        => $this->is_published ? '₴' : $this->currencyName,
         ];
     }
 }

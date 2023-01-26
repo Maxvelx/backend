@@ -15,25 +15,27 @@ class StoreController extends Controller
         $data = $request->validated();
         if (auth()->user()) {
             $user = auth()->user();
-            auth()->user()->update(
+            $user->update(
                 [
-                    'name'         => $data['name'],
-                    'lastName'     => $data['lastName'],
-                    'patronymic'   => $data['patronymic'],
-                    'phone_number' => $data['phone_number'],
-                    'address'      => $data['address'],
+                    'name'             => $data['name'],
+                    'lastName'         => $data['lastName'],
+                    'patronymic'       => $data['patronymic'],
+                    'phone_number'     => $data['phone_number'],
+                    'address'          => $data['address'],
+                    'delivery_company' => $data['delivery_company'],
                 ]);
         } else {
             $data['password'] = \Hash::make($data['password']);
             $user             = User::firstOrCreate(
                 ['email' => $data['email']],
                 [
-                    'name'         => $data['name'],
-                    'password'     => $data['password'],
-                    'lastName'     => $data['lastName'],
-                    'patronymic'   => $data['patronymic'],
-                    'phone_number' => $data['phone_number'],
-                    'address'      => $data['address'],
+                    'name'             => $data['name'],
+                    'password'         => $data['password'],
+                    'lastName'         => $data['lastName'],
+                    'patronymic'       => $data['patronymic'],
+                    'phone_number'     => $data['phone_number'],
+                    'address'          => $data['address'],
+                    'delivery_company' => $data['delivery_company'],
                 ]);
         }
 

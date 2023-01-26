@@ -11,16 +11,19 @@ class Parts extends Model
     protected $table = 'parts';
     protected $guarded = false;
 
+
     const PRICE_UAH  = 0;
     const PRICE_USD  = 1;
     const PRICE_EURO = 2;
+    const PRICE_UNDF = '';
 
     public static function getCurrencyStatus()
     {
         return [
-            self::PRICE_UAH  => 'Гривня',
-            self::PRICE_USD  => 'Долар',
-            self::PRICE_EURO => 'Євро',
+            self::PRICE_UAH  => '₴',
+            self::PRICE_USD  => '$',
+            self::PRICE_EURO => '€',
+            self::PRICE_UNDF => '',
         ];
     }
 
@@ -114,10 +117,13 @@ class Parts extends Model
 
     public function scopeSortPriceAsc($query, $data)
     {
+
         return $query->when(isset($data['orderBy']) && $data['orderBy'] == 1, function ($query) {
-            $query->orderBy('price_show', 'ASC');
+
+            $query->orderBy('price_show');
         });
     }
+
 
     public function scopeSortPriceDesc($query, $data)
     {

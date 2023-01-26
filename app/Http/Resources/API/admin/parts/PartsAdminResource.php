@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\API\admin\parts;
 
-use App\Http\Resources\API\client\PriceResource;
 use App\Models\Supplier;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -30,12 +29,12 @@ class PartsAdminResource extends JsonResource
             'part_name'       => $this->name_parts,
             'qty'             => $this->quantity,
             'price_1'         => $this->price_1,
-            'currency_1'      => PriceResource::getCurrency($this),
+            'currency_1'      => $this->currencyName,
             'price'           => $this->convert == 1 || $this->is_published
                 ? $this->getPriceWithCoefficient($this)
                 : $this->getPriceWithCoefficientWoutConvert($this),
             'image'           => $this->imageUrlFirst,
-            'currency'        => $this->is_published ? 'грн' : PriceResource::getCurrency($this),
+            'currency'        => $this->is_published ? '₴' : $this->currencyName,
             'label'           => $this->label,
             'canDelivery'     => $canDelivery == 0 ? 'no' : 'yes',
         ];
