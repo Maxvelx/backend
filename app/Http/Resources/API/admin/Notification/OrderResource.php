@@ -26,6 +26,7 @@ class OrderResource extends JsonResource
             'user_id'         => $this->user_id,
             'time'            => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)
                 ->format('F j, Y'),
+            'timeAgo'         => $this->created_at->diffForHumans(),
             'delivery_status' => $this->delivery_status,
             'payment_status'  => $this->payment_status,
         ];

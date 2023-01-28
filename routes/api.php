@@ -66,4 +66,6 @@ Route::group( ['prefix'=>'admin','middleware' => ['jwt.auth','admin'] ], static 
     Route::post('/import_price', \App\Http\Controllers\API\admin\Settings\Import\PartsImportController::class);
     Route::post('/import', \App\Http\Controllers\API\admin\Settings\Import\IndexController::class);
     Route::post('/notification', \App\Http\Controllers\API\admin\Notification\NavbarController::class);
+    Route::post('/all_orders', \App\Http\Controllers\API\admin\Orders\IndexController::class);
+    Route::post('/vin_all_request', \App\Http\Controllers\API\admin\VinRequest\IndexController::class);
 } );
