@@ -45,6 +45,7 @@ Route::get( '/brand/{brand}', \App\Http\Controllers\API\client\Brands\ShowContro
 Route::get( '/delivery_companies', \App\Http\Controllers\API\client\DeliveryCompanies\IndexController::class);
 Route::post( '/brand/show/{brand}', \App\Http\Controllers\API\client\Brands\ShowShopController::class );
 Route::post( '/order', \App\Http\Controllers\API\client\Order\StoreController::class );
+Route::post( '/vin_request', \App\Http\Controllers\API\client\VinRequest\StoreController::class );
 Route::post( '/auth/register', \App\Http\Controllers\API\client\User\RegisterController::class );
 
 //admin panel auth
@@ -56,11 +57,13 @@ Route::group( ['prefix'=>'admin','middleware' => ['jwt.auth','admin'] ], static 
     Route::resource( '/suppliers', \App\Http\Controllers\API\admin\Supplier\SupplierController::class );
     Route::resource( '/delivery_company', \App\Http\Controllers\API\admin\DeliveryCompanies\DeliveryCompanyController::class );
     Route::resource( '/users', \App\Http\Controllers\API\admin\User\UserController::class );
+    Route::resource( '/orders', \App\Http\Controllers\API\admin\Orders\OrdersController::class );
+    Route::resource( '/vin_requests', \App\Http\Controllers\API\admin\VinRequest\VinRequestController::class );
 
     Route::get('/settings', \App\Http\Controllers\API\admin\Settings\IndexController::class);
     Route::patch('/settings/update', \App\Http\Controllers\API\admin\Settings\UpdateController::class);
     Route::get('/search', \App\Http\Controllers\API\admin\Search\SearchUserOrPartsController::class);
     Route::post('/import_price', \App\Http\Controllers\API\admin\Settings\Import\PartsImportController::class);
     Route::post('/import', \App\Http\Controllers\API\admin\Settings\Import\IndexController::class);
-
+    Route::post('/notification', \App\Http\Controllers\API\admin\Notification\NavbarController::class);
 } );
