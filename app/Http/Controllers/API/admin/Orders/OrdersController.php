@@ -43,11 +43,15 @@ class OrdersController extends Controller
         ]);
 
         $order->update($data);
+
+        return response(status: 200);
     }
 
 
     public function destroy(Order $order)
     {
         $order->delete();
+
+        return response(status: 200);
     }
 }

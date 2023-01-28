@@ -37,11 +37,15 @@ class VinRequestController extends Controller
         ]);
 
         $vinRequest->update($data);
+
+        return response(status: 200);
     }
 
 
     public function destroy(VinRequest $vinRequest)
     {
         $vinRequest->delete();
+
+        return response(status: 200);
     }
 }
