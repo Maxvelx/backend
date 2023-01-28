@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->integer('viewed')->default(0);
-            $table->integer('delivery_status')->nullable();
         });
     }
 
@@ -28,7 +27,6 @@ return new class extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->dropColumn('viewed');
-            $table->dropColumn('delivery_status');
         });
     }
 };
