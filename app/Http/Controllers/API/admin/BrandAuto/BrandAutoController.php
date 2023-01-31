@@ -16,8 +16,9 @@ class BrandAutoController extends BaseController
     public function index()
     {
         $brandAutos = BrandAuto::all();
-        $mainBrand  = BrandAuto::where( 'parent_id', 0 )->get();
-        return [ 'data' => $brandAutos, 'main' => $mainBrand ];
+        $mainBrand  = BrandAuto::where('parent_id', 0)->get();
+
+        return ['data' => $brandAutos, 'main' => $mainBrand];
     }
 
     /**
@@ -32,20 +33,22 @@ class BrandAutoController extends BaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\Admin\BrandAuto\StoreBrandAutoRequest $request
+     * @param  \App\Http\Requests\Admin\BrandAuto\StoreBrandAutoRequest  $request
      */
-    public function store( StoreBrandAutoRequest $request )
+    public function store(StoreBrandAutoRequest $request)
     {
         $data = $request->validated();
-        $this->service->store( $data );
+        $this->service->store($data);
+
+        return response(status: 200);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\BrandAuto $brand
+     * @param  \App\Models\BrandAuto  $brand
      */
-    public function show( BrandAuto $brand )
+    public function show(BrandAuto $brand)
     {
         //
     }
@@ -53,36 +56,43 @@ class BrandAutoController extends BaseController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\BrandAuto $brand
+     * @param  \App\Models\BrandAuto  $brand
      */
-    public function edit( BrandAuto $brand )
+    public function edit(BrandAuto $brand)
     {
         $mainBrands = BrandAuto::where('parent_id', 0)->get();
-        return [ 'brand'=>  new BrandsResource($brand), 'main' => BrandsResource::collection($mainBrands)];
+
+        return [
+            'brand' => new BrandsResource($brand), 'main' => BrandsResource::collection($mainBrands),
+        ];
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\Admin\BrandAuto\UpdateBrandAutoRequest $request
-     * @param \App\Models\BrandAuto $brand
+     * @param  \App\Http\Requests\Admin\BrandAuto\UpdateBrandAutoRequest  $request
+     * @param  \App\Models\BrandAuto  $brand
      */
-    public function update( UpdateBrandAutoRequest $request, BrandAuto $brand )
+    public function update(UpdateBrandAutoRequest $request, BrandAuto $brand)
     {
         $data = $request->validated();
-        $this->service->update( $data, $brand );
+        $this->service->update($data, $brand);
+
+        return response(status: 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\BrandAuto $brand
+     * @param  \App\Models\BrandAuto  $brand
      */
-    public function destroy( BrandAuto $brand )
+    public function destroy(BrandAuto $brand)
     {
         if ($brand->image_brand) {
             \Storage::disk('public')->delete($brand->image_brand);
         }
         $brand->delete();
+
+        return response(status: 200);
     }
 }

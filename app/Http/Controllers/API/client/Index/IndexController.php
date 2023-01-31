@@ -10,8 +10,9 @@ class IndexController extends Controller
 {
     public function __invoke()
     {
-        $brands = BrandAuto::where( 'parent_id', '>', 0 )->limit(5)->get();
-        return BrandsResource::collection( $brands );
+        $brands = BrandAuto::latest()->where('parent_id', '>', 0)->limit(5)->get();
+
+        return BrandsResource::collection($brands);
     }
 }
 

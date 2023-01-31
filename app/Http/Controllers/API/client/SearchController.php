@@ -6,21 +6,34 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Search\app\SearchRequest;
 use App\Http\Resources\API\client\PartsSearchResource;
 use App\Models\Parts;
+use App\Models\Replace;
 
 class SearchController extends Controller
 {
     public function __invoke(SearchRequest $request)
     {
-        $data         = $request->validated();
-        $searchResult = Parts::where('num_oem', $data['search'])
-            ->orWhere('num_part', $data['search'])
-            ->paginate(10, ['*'], 'page', $data['page']);
+        $data = $request->validated();
 
-        if ($searchResult->count() > 0) {
-            return PartsSearchResource::collection($searchResult);
+
+        $replace = Replace::where('numbers', 'LIKE', '%'.','.$data['search'].','.'%')
+            ->value('numbers');
+        if ($replace) {
+            $replace = explode(',', $replace);
+
+            foreach ($replace as $key => $value) {
+                $replace_parts[][] = $value;
+            }
+            $parts_replace = Parts::whereIn('num_part', $replace_parts)
+                ->where('num_part', '!=', $data['search'])
+                ->orderByDesc('quantity')
+                ->orderBy('delivery_time')
+                ->paginate(5, ['*'], 'page');
+        }
+
+        if ($parts_replace->count() > 0) {
+            return PartsSearchResource::collection($parts_replace);
         }
 
         return response(['message' => 'Not found']);
     }
-
 }

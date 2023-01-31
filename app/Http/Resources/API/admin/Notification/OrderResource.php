@@ -19,14 +19,14 @@ class OrderResource extends JsonResource
     public function toArray($request)
     {
         return [
+
             'id'              => $this->id,
             'parts'           => $this->parts,
             'number'          => $this->order_number,
             'user'            => User::where('id', $this->user_id)->value('name'),
             'user_id'         => $this->user_id,
-            'time'            => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)
-                ->format('F j, Y'),
-            'timeAgo'         => $this->created_at->diffForHumans(),
+            'time'            => $this->created_at->locale('uk')->isoFormat('DD MMMM YYYY'),
+            'timeAgo'         => $this->created_at->locale('uk')->diffForHumans(),
             'delivery_status' => $this->delivery_status,
             'payment_status'  => $this->payment_status,
         ];

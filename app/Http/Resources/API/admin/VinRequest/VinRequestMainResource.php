@@ -23,11 +23,12 @@ class VinRequestMainResource extends JsonResource
             'name'       => $this->user_id ? User::where('id', $this->user_id)->value('name')
                 : $this->name,
             'user_id'    => $this->user_id,
-            'time'       => $this->created_at->diffForHumans(),
+            'time'       => $this->created_at->locale('uk')->diffForHumans(),
             'phone'      => $this->phone_number,
             'vin_number' => $this->vin_number,
             'email'      => $this->email,
             'parts'      => nl2br($this->request_parts),
+            'status'     => $this->status,
         ];
     }
 }

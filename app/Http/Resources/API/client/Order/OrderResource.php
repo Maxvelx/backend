@@ -20,8 +20,7 @@ class OrderResource extends JsonResource
             'id'           => $this->id,
             'order_number' => $this->order_number,
             'parts'        => json_decode($this->parts),
-            'time'         => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)
-                ->format('F j, Y'),
+            'time'         => $this->created_at->locale('uk')->isoFormat('DD MMMM YYYY'),
             'label'        => $this->label,
         ];
     }

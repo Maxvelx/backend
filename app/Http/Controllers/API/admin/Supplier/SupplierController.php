@@ -34,7 +34,6 @@ class SupplierController extends Controller
             'coefficient' => 'required|max:255'
         ]);
         Supplier::firstOrCreate($data);
-        Parts::where('label', $data['title'])->update(['convert' => $data['convert']]);
 
         return response(status: 200);
     }
@@ -55,10 +54,6 @@ class SupplierController extends Controller
         ]);
 
         $supplier->update($data);
-
-        if ($supplier->convert != $data['convert']) {
-            Parts::where('label', $data['title'])->update(['convert' => $data['convert']]);
-        }
 
         return response(status: 200);
     }

@@ -20,6 +20,7 @@ class PartsAdminResource extends JsonResource
         $request
     ) {
         $canDelivery = Supplier::where('title', $this->label)->value('canDelivery');
+        $convert     = Supplier::where('title', $this->label)->value('convert');
 
         return [
             'id'              => $this->id,
@@ -30,11 +31,12 @@ class PartsAdminResource extends JsonResource
             'qty'             => $this->quantity,
             'price_1'         => $this->price_1,
             'currency_1'      => $this->currencyName,
-            'price'           => $this->convert == 1 || $this->is_published
+            'price'           => $convert === 1 || $this->is_published === 'true'
                 ? $this->getPriceWithCoefficient($this)
                 : $this->getPriceWithCoefficientWoutConvert($this),
             'image'           => $this->imageUrlFirst,
-            'currency'        => $this->is_published ? '₴' : $this->currencyName,
+            'currency'        => $convert === 1 || $this->is_published === 'true'
+                ? '₴' : $this->currencyName,
             'label'           => $this->label,
             'canDelivery'     => $canDelivery == 0 ? 'no' : 'yes',
         ];

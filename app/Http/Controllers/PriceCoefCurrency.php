@@ -28,7 +28,7 @@ class PriceCoefCurrency extends Controller
             return ceil($price_show);
         }
         if ($coef2 > 0) {
-            return ceil($part->price_show * $coef2);
+            return ceil($price_show * $coef2);
         }
 
         return ceil($price_show * $coef);

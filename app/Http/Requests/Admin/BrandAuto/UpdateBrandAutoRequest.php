@@ -26,7 +26,7 @@ class UpdateBrandAutoRequest extends FormRequest
         return [
             'brand_auto'  => 'string|max:255',
             'parent_id'   => 'integer',
-            'image_brand' => 'nullable',
+            'image_brand' => 'nullable|sometimes',
         ];
     }
 }

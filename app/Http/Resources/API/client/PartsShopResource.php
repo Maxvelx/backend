@@ -3,6 +3,7 @@
 namespace App\Http\Resources\API\client;
 
 use App\Http\Resources\API\admin\tag\TagResource;
+use App\Models\Supplier;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PartsShopResource extends JsonResource
@@ -17,6 +18,8 @@ class PartsShopResource extends JsonResource
      */
     public function toArray($request)
     {
+        $convert     = Supplier::where('title', $this->label)->value('convert');
+
         return [
             'id'              => $this->id,
             'part_brand'      => $this->brand_part,
@@ -27,7 +30,9 @@ class PartsShopResource extends JsonResource
             'price'           => $this->getPriceWithCoefficient($this),
             'image'           => $this->imageUrlFirst,
             'tags'            => TagResource::collection($this->tags),
-            'currency'        => $this->is_published ? '₴' : $this->currencyName,
+            'currency'        => $convert === 1 || $this->is_published === 'true'
+                ? '₴' : $this->currencyName,
+            'label'           => $this->label,
         ];
     }
 }

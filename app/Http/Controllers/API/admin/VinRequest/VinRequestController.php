@@ -33,7 +33,8 @@ class VinRequestController extends Controller
     public function update(Request $request, VinRequest $vinRequest)
     {
         $data = $request->validate([
-            'viewed' => 'required|integer|max:2',
+            'viewed' => 'nullable|integer|max:2',
+            'status' => 'nullable|integer|max:2',
         ]);
 
         $vinRequest->update($data);

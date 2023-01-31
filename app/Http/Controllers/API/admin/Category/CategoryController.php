@@ -29,7 +29,7 @@ class CategoryController extends Controller
         $data = $request->validated();
         Category::firstOrCreate($data);
 
-        return response(status: 201);
+        return response(status: 200);
     }
 
     /**

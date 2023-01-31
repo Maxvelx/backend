@@ -30,7 +30,6 @@ class UpdatePartsRequest extends FormRequest
             'tags.*'         => 'required|exists:tags,id',
             'brand_part'     => 'required|string',
             'num_part'       => 'required|string',
-            'num_oem'        => 'required|string',
             'name_parts'     => 'required|string',
             'quantity'       => 'required|string',
             'price_1'        => 'required',
