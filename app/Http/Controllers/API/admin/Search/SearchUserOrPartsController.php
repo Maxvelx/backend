@@ -22,8 +22,7 @@ class SearchUserOrPartsController extends Controller
             return UserResource::collection($searchData)->additional(['info' => 'users']);
         }
 
-        $parts = Parts::where('num_oem', $data['search'])
-            ->orWhere('num_part', $data['search'])
+        $parts = Parts::where('num_part', $data['search'])
             ->paginate(10, ['*'], 'page', $data['page']);
 
         return PartsAdminResource::collection($parts)->additional(['info' => 'parts']);

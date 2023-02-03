@@ -7,12 +7,27 @@ use Illuminate\Support\Facades\DB;
 
 class PriceCoefCurrency extends Controller
 {
+
     public static function getPriceWithCoef($part)
     {
-        $coef  = DB::table('settings')->value('coef');
-        $coef2 = Supplier::where('title', $part->label)->value('coefficient');
-        $usd   = DB::table('settings')->value('usd');
-        $euro  = DB::table('settings')->value('euro');
+        $coef = null;
+        $usd  = null;
+        $euro = null;
+
+        if ($part->price_currency != 0 || $part->price_2 <= 0) {
+            $data = DB::table('settings')->first();
+            if ($data) {
+                $coef = $data->coef;
+                $usd  = $data->usd;
+                $euro = $data->euro;
+            }
+        }
+
+        $coef2 = null;
+
+        if ($part->label) {
+            $coef2 = Supplier::where('title', $part->label)->value('coefficient');
+        }
 
         //Перевіряємо в якій валюті ціна
         if ($part->price_currency == 1) {
@@ -36,8 +51,15 @@ class PriceCoefCurrency extends Controller
 
     public static function getPriceWithCoefWoutConvert($part)
     {
-        $coef  = DB::table('settings')->value('coef');
-        $coef2 = Supplier::where('title', $part->label)->value('coefficient');
+        $coef = null;
+        if ($part->price_2 <= 0) {
+            $coef = DB::table('settings')->value('coef');
+        }
+
+        $coef2 = null;
+        if ($part->label) {
+            $coef2 = Supplier::where('title', $part->label)->value('coefficient');
+        }
 
         if ($part->price_2 > 0) {
             return ceil($part->price_show);
@@ -45,6 +67,7 @@ class PriceCoefCurrency extends Controller
         if ($coef2 > 0) {
             return ceil($part->price_show * $coef2);
         }
+
         return ceil($part->price_show * $coef);
     }
 

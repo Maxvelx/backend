@@ -16,8 +16,18 @@ class PartsSearchResource extends JsonResource
      */
     public function toArray($request)
     {
-        $canDelivery = Supplier::where('title', $this->label)->value('canDelivery');
-        $convert     = Supplier::where('title', $this->label)->value('convert');
+        $convert     = null;
+        $canDelivery = null;
+        $time        = null;
+        if ($this->label) {
+            $supplier = Supplier::where('title', $this->label)->first();
+            if ($supplier) {
+                $convert     = $supplier->convert;
+                $canDelivery = $supplier->canDelivery;
+                $time        = $supplier->delivery_time;
+            }
+        }
+
 
         return [
             'id'          => $this->id,
@@ -25,10 +35,10 @@ class PartsSearchResource extends JsonResource
             'part_number' => $this->num_part,
             'part_name'   => $this->name_parts,
             'qty'         => $this->quantity,
-            'time'        => $this->delivery_time,
+            'time'        => $time,
             'price'       => $convert === 1 || $this->is_published === 'true'
-                ? $this->getPriceWithCoefficient($this)
-                : $this->getPriceWithCoefficientWoutConvert($this),
+                ? $this->priceWithCoefficient($this)
+                : $this->priceWithCoefficientWoutConvert($this),
             'currency'    => $convert === 1 || $this->is_published === 'true'
                 ? '₴' : $this->currencyName,
             'canDelivery' => $canDelivery == 0 ? 'no' : 'yes',

@@ -19,8 +19,17 @@ class PartsAdminResource extends JsonResource
     function toArray(
         $request
     ) {
-        $canDelivery = Supplier::where('title', $this->label)->value('canDelivery');
-        $convert     = Supplier::where('title', $this->label)->value('convert');
+
+        $convert     = null;
+        $canDelivery = null;
+
+        if ($this->label) {
+            $supplier = Supplier::where('title', $this->label)->first();
+            if ($supplier) {
+                $convert     = $supplier->convert;
+                $canDelivery = $supplier->canDelivery;
+            }
+        }
 
         return [
             'id'              => $this->id,
@@ -32,8 +41,8 @@ class PartsAdminResource extends JsonResource
             'price_1'         => $this->price_1,
             'currency_1'      => $this->currencyName,
             'price'           => $convert === 1 || $this->is_published === 'true'
-                ? $this->getPriceWithCoefficient($this)
-                : $this->getPriceWithCoefficientWoutConvert($this),
+                ? $this->priceWithCoefficient($this)
+                : $this->priceWithCoefficientWoutConvert($this),
             'image'           => $this->imageUrlFirst,
             'currency'        => $convert === 1 || $this->is_published === 'true'
                 ? '₴' : $this->currencyName,

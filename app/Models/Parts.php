@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Parts extends Model
 {
-    protected $table = 'parts';
+    protected $table   = 'parts';
     protected $guarded = false;
 
 
@@ -32,12 +32,12 @@ class Parts extends Model
         return self::getCurrencyStatus()[$this->price_currency];
     }
 
-    public static function getPriceWithCoefficient($part)
+    public static function priceWithCoefficient($part)
     {
         return PriceCoefCurrency::getPriceWithCoef($part);
     }
 
-    public static function getPriceWithCoefficientWoutConvert($part)
+    public static function priceWithCoefficientWoutConvert($part)
     {
         return PriceCoefCurrency::getPriceWithCoefWoutConvert($part);
     }
@@ -69,8 +69,9 @@ class Parts extends Model
 
     public function getImageUrlFirstAttribute()
     {
-        if ($this->images()->value('path_image') !== null) {
-            return url(\Storage::url($this->images()->value('path_image')));
+        $image = $this->images->value('path_image');
+        if ($image !== null) {
+            return url(\Storage::url($image));
         }
 
         return 0;
@@ -117,9 +118,7 @@ class Parts extends Model
 
     public function scopeSortPriceAsc($query, $data)
     {
-
         return $query->when(isset($data['orderBy']) && $data['orderBy'] == 1, function ($query) {
-
             $query->orderBy('price_show');
         });
     }

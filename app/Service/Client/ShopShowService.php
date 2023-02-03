@@ -8,7 +8,6 @@ use App\Http\Resources\API\client\PartsShopResource;
 use App\Models\BrandAuto;
 use App\Models\Category;
 use App\Models\Tag;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ShopShowService
 {
@@ -27,6 +26,7 @@ class ShopShowService
     {
         $parts = BrandAuto::find($brand->id)
             ->parts()
+            ->with('images')
             ->active()
             ->categoryFilter($data)
             ->tagsFilter($data)
@@ -40,12 +40,14 @@ class ShopShowService
             ->active()
             ->categoryFilter($data)
             ->tagsFilter($data)
+            ->with('tags')
             ->get();
 
-        if ( count($partsForCategory) < 1) {
-            $parts = [];
+        if (count($partsForCategory) < 1) {
+            $parts      = [];
             $categories = [];
-            $tags = [];
+            $tags       = [];
+
             return $this->ResultFilters($parts, $brand, $categories, $tags);
         }
 
@@ -93,7 +95,7 @@ class ShopShowService
 
             $count = array_count_values($this->tagsID);
 
-            $tags = Tag::where('model_id', $brand->id)->get();
+            $tags = Tag::where('model_id', $brand->id)->select('id', 'title', 'model_id')->get();
 
             foreach ($count as $key => $item) {
                 foreach ($tags as $tag) {

@@ -20,6 +20,7 @@ class ShowPartController extends Controller
                 $replace_parts[][] = $value;
             }
             $parts_replace = Parts::whereIn('num_part', $replace_parts)
+                ->with('images')
                 ->orderByDesc('quantity')
                 ->orderBy('delivery_time')
                 ->get();
@@ -27,14 +28,17 @@ class ShowPartController extends Controller
 
         } else {
             $parts_replace = Parts::where('num_part', $part->num_part)
+                ->with('images')
                 ->orderByDesc('quantity')
                 ->orderBy('delivery_time')
                 ->get();
         }
+
 
         return [
             'data'    => new PartsResource($part),
             'replace' => PartsResource::collection($parts_replace),
         ];
     }
+
 }

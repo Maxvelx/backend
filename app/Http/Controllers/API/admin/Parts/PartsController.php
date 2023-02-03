@@ -5,15 +5,12 @@ namespace App\Http\Controllers\API\admin\Parts;
 use App\Http\Requests\Admin\Parts\StorePartsRequest;
 use App\Http\Requests\Admin\Parts\UpdatePartsRequest;
 use App\Http\Resources\API\admin\parts\PartsAdminResource;
-use App\Http\Resources\API\client\PartsResource;
 use App\Models\BrandAuto;
 use App\Models\BrandParts;
 use App\Models\Category;
 use App\Models\Parts;
-use App\Models\PartsImages;
 use App\Models\PartsTag;
 use App\Models\Tag;
-use Illuminate\Support\Facades\Cache;
 
 class PartsController extends BaseController
 {
@@ -37,12 +34,12 @@ class PartsController extends BaseController
      */
     public function index()
     {
-        $page  = request()->page;
 //        $parts = Cache::remember('admin_parts'.$page, 60 * 60 * 24, function () {
-            $parts = Parts::orderBy('id', 'desc')
-                ->whereNull('label')
-                ->orWhere('is_published', 'true')
-                ->paginate(20, ['*'], 'page');
+        $parts = Parts::where('is_published', 'true')
+            ->orWhereNull('label')
+            ->orderBy('id', 'desc')
+            ->paginate(20, ['*'], 'page');
+
 //        });
 
         return PartsAdminResource::collection($parts);
@@ -76,6 +73,7 @@ class PartsController extends BaseController
     {
         $data = $request->validated();
         $this->service->store($data);
+
 //        self::forgetCaches('admin_parts');
 
         return response(status: 200);
@@ -128,6 +126,7 @@ class PartsController extends BaseController
     {
         $data = $request->validated();
         $this->service->update($data, $part);
+
 //        self::forgetCaches('admin_parts');
 
         return response(status: 200);
@@ -145,6 +144,7 @@ class PartsController extends BaseController
         $part->images ? $part->images()->delete() : false;
 
         $part->delete();
+
 //        self::forgetCaches('admin_parts');
 
         return response(status: 200);

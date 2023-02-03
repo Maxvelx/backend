@@ -28,9 +28,11 @@ class SearchController extends Controller
                 ->orderByDesc('quantity')
                 ->orderBy('delivery_time')
                 ->paginate(5, ['*'], 'page');
+        } else {
+            $parts_replace = null;
         }
 
-        if ($parts_replace->count() > 0) {
+        if ($parts_replace) {
             return PartsSearchResource::collection($parts_replace);
         }
 

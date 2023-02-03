@@ -16,7 +16,7 @@ class SupplierController extends Controller
 
     public function index()
     {
-        return Supplier::select('coefficient','canDelivery','convert', 'title', 'id')->orderBy('id', 'desc')
+        return Supplier::orderBy('id', 'desc')
             ->paginate(10, ['*'], 'page');
     }
 
@@ -28,10 +28,11 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'title'       => 'required|string|max:255',
-            'convert'     => 'required|max:255',
-            'canDelivery' => 'required|max:255',
-            'coefficient' => 'required|max:255'
+            'title'         => 'required|string|max:255',
+            'convert'       => 'nullable|max:255',
+            'canDelivery'   => 'nullable|max:255',
+            'coefficient'   => 'nullable|max:255',
+            'delivery_time' => 'nullable|max:255',
         ]);
         Supplier::firstOrCreate($data);
 
@@ -47,10 +48,12 @@ class SupplierController extends Controller
     public function update(Request $request, Supplier $supplier)
     {
         $data = $request->validate([
-            'title'   => 'required|string|max:255',
-            'convert' => 'required|max:255',
-            'canDelivery' => 'required|max:255',
-            'coefficient' => 'required|max:255'
+            'title'         => 'required|string|max:255',
+            'convert'       => 'nullable|max:255',
+            'canDelivery'   => 'nullable|max:255',
+            'coefficient'   => 'nullable|max:255',
+            'delivery_time' => 'nullable|max:255',
+
         ]);
 
         $supplier->update($data);
@@ -66,6 +69,8 @@ class SupplierController extends Controller
 
     public function destroy(Supplier $supplier)
     {
+        Parts::where('label', $supplier->title)->delete();
+
         $supplier->delete();
 
         return response(status: 200);

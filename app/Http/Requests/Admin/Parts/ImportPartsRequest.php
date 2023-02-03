@@ -25,10 +25,9 @@ class ImportPartsRequest extends FormRequest
     {
         return [
             'file_import'    => 'file|required',
-            'price_currency' => 'nullable|string|max:255',
-            'delivery_time'  => 'nullable|string|max:255',
-            'label'          => 'nullable|string|max:255',
-            'convert'        => 'nullable|string|max:255',
+            'price_currency' => 'required|string|max:255',
+            'brand'          => 'nullable|string|max:255',
+            'label'          => 'required|string|max:255',
         ];
     }
 }
