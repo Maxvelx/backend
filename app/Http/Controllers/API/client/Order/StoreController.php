@@ -40,9 +40,10 @@ class StoreController extends Controller
         }
 
         $order = Order::create([
-            'user_id'      => $user->id,
-            'parts'        => json_encode($data['parts']),
-            'order_number' => fake()->randomNumber(6, true),
+            'user_id'       => $user->id,
+            'parts'         => json_encode($data['parts']),
+            'message_order' => $data['message_order'],
+            'order_number'  => fake()->randomNumber(6, true),
         ]);
 
         return new OrderResource($order);

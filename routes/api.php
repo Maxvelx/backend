@@ -65,9 +65,12 @@ Route::group( ['prefix'=>'admin','middleware' => ['jwt.auth','admin'] ], static 
     Route::get('/settings', \App\Http\Controllers\API\admin\Settings\IndexController::class);
     Route::patch('/settings/update', \App\Http\Controllers\API\admin\Settings\UpdateController::class);
     Route::get('/search', \App\Http\Controllers\API\admin\Search\SearchUserOrPartsController::class);
+    Route::post('/order_add_search', \App\Http\Controllers\API\admin\Search\SearchForOrderController::class);
     Route::post('/import_price', \App\Http\Controllers\API\admin\Settings\Import\PartsImportController::class);
+    Route::post('/update_parts', \App\Http\Controllers\API\admin\Settings\Import\UpdatePartController::class);
     Route::post('/import', \App\Http\Controllers\API\admin\Settings\Import\IndexController::class);
     Route::post('/notification', \App\Http\Controllers\API\admin\Notification\NavbarController::class);
     Route::post('/all_orders', \App\Http\Controllers\API\admin\Orders\IndexController::class);
     Route::post('/vin_all_request', \App\Http\Controllers\API\admin\VinRequest\IndexController::class);
+    Route::post('/wishlist_count', \App\Http\Controllers\API\admin\Home\IndexController::class);
 } );

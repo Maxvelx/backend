@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->string('phone_number')->nullable();
             $table->string('email')->nullable();
             $table->text('request_parts')->nullable();
-            $table->string('status_request')->nullable();
+            $table->integer('status')->default(0);
             $table->string('user_id')->nullable();
             $table->timestamps();
         });

@@ -14,41 +14,33 @@ class PartsImportController extends Controller
     {
         $data = $request->validated();
 
+        $file = $data['file_import'];
+        unset($data['file_import']);
+
 
         dispatch(new DeleteImportRows($data['label']));
 
-        $rows = SimpleExcelReader::create($data['file_import'], 'csv')
+        $rows = SimpleExcelReader::create($file, 'csv')
             ->trimHeaderRow()
             ->getRows()
-            ->toArray();
+            ->map(function ($row) use ($data) {
+                $row                = array_intersect_key($row, array_flip([
+                    'brand_part',
+                    'num_part',
+                    'name_parts',
+                    'quantity',
+                    'price_1',
+                ]));
+                $row['price_1'] && $row['price_1'] > 0 ? false : $row['price_1'] = 0;
+                $data['price_show'] = $row['price_1'];
+                $row                += $data;
 
-//
-//        foreach ($rows as $row) {
-//            return $row;
-//        }
+                return $row;
+            });
 
-        $data['created_at'] = now();
-        $data['updated_at'] = now();
-        if ($data['brand']){
-            $data['brand_part'] = $data['brand'];
-            unset($data['brand']);
-        }
 
-        unset($data['file_import']);
-        foreach ($rows as &$row) {
-            $row = array_intersect_key($row, array_flip([
-                'brand_part',
-                'num_part',
-                'name_parts',
-                'quantity',
-                'price_1',
-            ]));
-
-            $row += $data;
-            $row['price_show'] = $row['price_1'];
-        }
-
-        foreach (array_chunk($rows, 990) as $chunk) {
+        $chunks = $rows->chunk(990)->toArray();
+        foreach ($chunks as $chunk) {
             $this->dispatch(new ImportParts($chunk));
         }
 

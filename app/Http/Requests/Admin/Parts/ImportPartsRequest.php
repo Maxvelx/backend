@@ -26,7 +26,7 @@ class ImportPartsRequest extends FormRequest
         return [
             'file_import'    => 'file|required',
             'price_currency' => 'required|string|max:255',
-            'brand'          => 'nullable|string|max:255',
+            'brand_part'     => 'nullable|string|max:255',
             'label'          => 'required|string|max:255',
         ];
     }

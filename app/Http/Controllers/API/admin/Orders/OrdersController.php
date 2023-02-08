@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\admin\Orders;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\API\admin\Notification\OrderResource;
+use App\Http\Resources\API\admin\Orders\OrderSingleResource;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -22,25 +23,31 @@ class OrdersController extends Controller
 
     public function store(Request $request)
     {
-      //
+        //
     }
 
     public function show(Order $order)
     {
-        return new OrderResource($order);
+        return new OrderSingleResource($order);
     }
 
 
     public function edit(Order $order)
     {
-
     }
 
     public function update(Request $request, Order $order)
     {
         $data = $request->validate([
-            'viewed' => 'required|integer|max:2',
+            'viewed'        => 'nullable|integer|max:2',
+            'parts'         => 'nullable',
+            'label'         => 'nullable',
+            'message_order' => 'max:1000',
         ]);
+
+        if (isset($data['parts'])) {
+            $data['parts'] = json_encode($data['parts']);
+        }
 
         $order->update($data);
 

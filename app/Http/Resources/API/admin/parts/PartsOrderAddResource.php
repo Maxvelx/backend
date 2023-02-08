@@ -5,7 +5,7 @@ namespace App\Http\Resources\API\admin\parts;
 use App\Models\Supplier;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PartsAdminResource extends JsonResource
+class PartsOrderAddResource extends JsonResource
 {
 
     /**
@@ -21,14 +21,17 @@ class PartsAdminResource extends JsonResource
     ) {
         $convert     = null;
         $canDelivery = null;
+        $time        = null;
 
         if ($this->label) {
             $supplier = Supplier::where('title', $this->label)->first();
             if ($supplier) {
                 $convert     = $supplier->convert;
                 $canDelivery = $supplier->canDelivery;
+                $time        = $supplier->delivery_time;
             }
         }
+
 
         return [
             'id'              => $this->id,
@@ -37,17 +40,14 @@ class PartsAdminResource extends JsonResource
             'part_number_oem' => $this->num_oem,
             'part_name'       => $this->name_parts,
             'qty'             => $this->quantity,
-            'price_1'         => $this->price_1,
-            'currency_1'      => $this->currencyName,
             'price'           => $convert === 1 || $this->is_published === 'true'
                 ? $this->priceWithCoefficient($this)
                 : $this->priceWithCoefficientWoutConvert($this),
-            'image'           => $this->imageUrlFirst,
             'currency'        => $convert === 1 || $this->is_published === 'true'
                 ? '₴' : $this->currencyName,
             'label'           => $this->label,
             'canDelivery'     => $canDelivery == 0 ? 'no' : 'yes',
-            'total'           => $this->total,
+            'time'            => $time,
         ];
     }
 }

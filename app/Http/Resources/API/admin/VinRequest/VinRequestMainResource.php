@@ -29,6 +29,7 @@ class VinRequestMainResource extends JsonResource
             'email'      => $this->email,
             'parts'      => nl2br($this->request_parts),
             'status'     => $this->status,
+            'viewed'     => $this->viewed,
         ];
     }
 }

@@ -35,7 +35,8 @@ class StoreOrderRequest extends FormRequest
             'user_id'          => 'nullable',
             'parts'            => 'required|array',
             'payment_status'   => 'nullable',
-            'delivery_company' => 'max:20'
+            'delivery_company' => 'max:200',
+            'message_order'    => 'nullable|max:1000',
         ];
     }
 }

@@ -18,8 +18,11 @@ return new class extends Migration
             $table->foreignId('user_id')->index()->constrained('users');
             $table->string( 'order_number' );
             $table->jsonb( 'parts' );
-            $table->float( 'total_price' );
-            $table->unsignedSmallInteger( 'payment_status' )->default(1);
+            $table->string('label')->nullable();
+            $table->integer('viewed')->default(0);
+            $table->text('message_order')->nullable();
+            $table->unsignedSmallInteger( 'payment_status' )->default(0);
+            $table->timestamp( 'payment_time' )->nullable();
             $table->unsignedSmallInteger( 'delivery_status' )->default(0);
             $table->timestamps();
             $table->softDeletes();

@@ -25,6 +25,7 @@ class VinRequestResource extends JsonResource
             'user_id'         => $this->user_id,
             'time'            => $this->created_at->diffForHumans(),
             'phone' => $this->phone_number,
+            'viewed'          => $this->viewed,
         ];
     }
 }

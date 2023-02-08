@@ -5,15 +5,15 @@ namespace App\Http\Controllers\API\admin\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\StoreUserRequest;
 use App\Http\Requests\Admin\User\UpdateUserRequest;
+use App\Http\Resources\API\admin\Notification\OrderResource;
+use App\Http\Resources\API\admin\parts\PartsAdminResource;
 use App\Http\Resources\API\client\Personal\UserResource;
+use App\Models\Garage;
+use App\Models\Order;
 use App\Models\User;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     */
     public function index()
     {
         $users = User::orderBy('id', 'desc')->paginate(10, ['*'], 'page');
@@ -21,17 +21,6 @@ class UserController extends Controller
         return UserResource::collection($users);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     */
-    //create here
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \App\Http\Requests\Admin\User\StoreUserRequest $request
-     */
     public function store(StoreUserRequest $request)
     {
         $data             = $request->validated();
@@ -40,44 +29,34 @@ class UserController extends Controller
         return response(status: 200);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\Models\User $user
-     */
+
     public function show(User $user)
     {
-        $likedParts = $user->GetLikedParts;
-        return view('admin.user.show', compact('user','likedParts'));
+        $orders = Order::where('user_id', $user->id)->paginate(10, ['*'], 'page');
+        $cars = Garage::where('user_id', $user->id)->paginate(10, ['*'], 'page');
+        $wishlist = $user->GetLikedParts()->paginate(10, ['*'], 'page');
+
+
+        return [
+            'orders' => OrderResource::collection($orders),
+            'cars' => $cars,
+            'wishlist' => PartsAdminResource::collection($wishlist),
+
+        ];
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Models\User $user
-     */
     public function edit(User $user)
     {
         return  new UserResource($user);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \App\Http\Requests\Admin\User\UpdateUserRequest $request
-     * @param \App\Models\User $user
-     */
     public function update(UpdateUserRequest $request, User $user)
     {
         $user->update($request->validated());
         return response(status: 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\Models\User $user
-     */
+
     public function destroy(User $user)
     {
         $user->delete();
