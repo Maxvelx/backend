@@ -67,9 +67,24 @@ class Parts extends Model
         return $this->belongsToMany(Tag::class, 'parts_tags', 'part_id', 'tag_id');
     }
 
+    public function maintenanceKit()
+    {
+        return $this->belongsToMany(MaintenanceKit::class, 'maintenance_kits','kit_id', 'kit_part_id');
+    }
+
     public function getImageUrlFirstAttribute()
     {
         $image = $this->images->value('path_image');
+        if ($image !== null) {
+            return url(\Storage::url($image));
+        }
+
+        return 0;
+    }
+
+    public static function ImageUrlFirst($part)
+    {
+        $image = PartsImages::where('part_id', $part->kit_part_id)->value('path_image');
         if ($image !== null) {
             return url(\Storage::url($image));
         }
@@ -121,6 +136,7 @@ class Parts extends Model
         return $query->when(isset($data['orderBy']) && $data['orderBy'] == 1, function ($query) {
             $query->orderBy('price_show');
         });
+
     }
 
 

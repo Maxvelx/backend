@@ -30,9 +30,9 @@ class ShopShowService
             ->active()
             ->categoryFilter($data)
             ->tagsFilter($data)
+            ->newest($data)
             ->sortPriceAsc($data)
             ->sortPriceDesc($data)
-            ->newest($data)
             ->paginate(12, ['*'], 'page', $data['page']);
 
         $partsForCategory = BrandAuto::find($brand->id)

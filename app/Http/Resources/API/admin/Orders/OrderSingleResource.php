@@ -30,7 +30,7 @@ class OrderSingleResource extends JsonResource
             'payment_status'  => $this->payment_status,
             'viewed'          => $this->viewed,
             'label'           => $this->label,
-            'message_order'   => nl2br($this->message_order),
+            'message_order'   => $this->message_order,
         ];
     }
 }

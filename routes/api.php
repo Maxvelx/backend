@@ -39,6 +39,7 @@ Route::group( [ 'middleware' => 'jwt.auth' ], static function() {
 Route::get( '/parts', \App\Http\Controllers\API\client\Parts\PartsController::class );
 Route::get( '/parts/show/{part}', \App\Http\Controllers\API\client\Parts\ShowPartController::class );
 Route::get( '/index/brands', \App\Http\Controllers\API\client\Index\IndexController::class );
+Route::get( '/index/site_info', \App\Http\Controllers\API\client\Index\Info\IndexController::class );
 Route::get( '/search', \App\Http\Controllers\API\client\SearchController::class );
 Route::get( '/oem_search', \App\Http\Controllers\API\client\SearchOemController::class );
 Route::get( '/brand', \App\Http\Controllers\API\client\Brands\IndexController::class );
@@ -62,8 +63,10 @@ Route::group( ['prefix'=>'admin','middleware' => ['jwt.auth','admin'] ], static 
     Route::resource( '/orders', \App\Http\Controllers\API\admin\Orders\OrdersController::class );
     Route::resource( '/vin_requests', \App\Http\Controllers\API\admin\VinRequest\VinRequestController::class );
 
-    Route::get('/settings', \App\Http\Controllers\API\admin\Settings\IndexController::class);
+    Route::post('/settings', \App\Http\Controllers\API\admin\Settings\IndexController::class);
     Route::patch('/settings/update', \App\Http\Controllers\API\admin\Settings\UpdateController::class);
+    Route::post('/site_settings', \App\Http\Controllers\API\admin\Settings\Site\IndexController::class);
+    Route::patch('/site_settings_update', \App\Http\Controllers\API\admin\Settings\Site\UpdateController::class);
     Route::get('/search', \App\Http\Controllers\API\admin\Search\SearchUserOrPartsController::class);
     Route::post('/order_add_search', \App\Http\Controllers\API\admin\Search\SearchForOrderController::class);
     Route::post('/import_price', \App\Http\Controllers\API\admin\Settings\Import\PartsImportController::class);

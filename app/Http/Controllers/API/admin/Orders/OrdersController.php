@@ -32,9 +32,6 @@ class OrdersController extends Controller
     }
 
 
-    public function edit(Order $order)
-    {
-    }
 
     public function update(Request $request, Order $order)
     {

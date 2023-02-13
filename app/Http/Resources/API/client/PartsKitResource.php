@@ -2,10 +2,12 @@
 
 namespace App\Http\Resources\API\client;
 
+use App\Models\Parts;
+use App\Models\PartsImages;
 use App\Models\Supplier;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PartsResource extends JsonResource
+class PartsKitResource extends JsonResource
 {
 
     public
@@ -25,20 +27,19 @@ class PartsResource extends JsonResource
             }
         }
 
-
         return [
-            'id'              => $this->id,
+            'id'              => $this->kit_part_id,
             'part_brand'      => $this->brand_part,
             'part_number'     => $this->num_part,
             'part_number_oem' => $this->num_oem,
             'part_name'       => $this->name_parts,
             'qty'             => $this->quantity,
             'price'           => $convert === 1 || $this->is_published === 'true'
-                ? $this->priceWithCoefficient($this)
-                : $this->priceWithCoefficientWoutConvert($this),
-            'image'           => $this->imageUrlFirst,
+                ? Parts::priceWithCoefficient($this)
+                : Parts::priceWithCoefficientWoutConvert($this),
+            'image'           => Parts::ImageUrlFirst($this),
             'currency'        => $convert === 1 || $this->is_published === 'true'
-                ? '₴' : $this->currencyName,
+                ? '₴' : Parts::getCurrencyStatus()[$this->price_currency],
             'label'           => $this->label,
             'canDelivery'     => $canDelivery == 0 ? 'no' : 'yes',
             'time'            => $time,

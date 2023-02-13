@@ -7,6 +7,7 @@ use App\Http\Requests\Search\app\SearchRequest;
 use App\Http\Resources\API\client\PartsSearchResource;
 use App\Models\Parts;
 use App\Models\Replace;
+use App\Models\Supplier;
 
 class SearchController extends Controller
 {
@@ -23,11 +24,14 @@ class SearchController extends Controller
             foreach ($replace as $key => $value) {
                 $replace_parts[][] = $value;
             }
+
             $parts_replace = Parts::whereIn('num_part', $replace_parts)
                 ->where('num_part', '!=', $data['search'])
-                ->orderByDesc('quantity')
-                ->orderBy('delivery_time')
+                ->orderByRaw('quantity > 0 desc')
+                ->orderBy(Supplier::select('delivery_time')
+                    ->whereColumn('parts.label', 'suppliers.title'))
                 ->paginate(5, ['*'], 'page');
+
         } else {
             $parts_replace = null;
         }

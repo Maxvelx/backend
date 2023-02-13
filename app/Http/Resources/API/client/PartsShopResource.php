@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\API\client;
 
+use App\Models\Parts;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PartsShopResource extends JsonResource
@@ -25,7 +26,7 @@ class PartsShopResource extends JsonResource
             'part_number_oem' => $this->num_oem,
             'part_name'       => $this->name_parts,
             'qty'             => $this->quantity,
-            'price'           => $this->priceWithCoefficient($this),
+            'price'           => Parts::priceWithCoefficient($this),
             'image'           => $this->imageUrlFirst,
             'currency'        => '₴',
             'label'           => $this->label,

@@ -8,9 +8,11 @@ use App\Http\Resources\API\admin\parts\PartsAdminResource;
 use App\Models\BrandAuto;
 use App\Models\BrandParts;
 use App\Models\Category;
+use App\Models\MaintenanceKit;
 use App\Models\Parts;
 use App\Models\PartsTag;
 use App\Models\Tag;
+use Illuminate\Support\Facades\DB;
 
 class PartsController extends BaseController
 {
@@ -103,16 +105,28 @@ class PartsController extends BaseController
         $brandSelected    = BrandParts::where('part_id', $part->id)->get('brand_auto_id');
         $tagSelected      = PartsTag::where('part_id', $part->id)->get('tag_id');
         $currencySelected = $part->price_currency;
+        $part_kit         = MaintenanceKit::where('kit_id', $part->id)->pluck('kit_part_id');
+        DB::statement("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
+
+        $part_kit_show = MaintenanceKit::where('kit_id', $part->id)
+            ->groupBy('kit_part_id')
+            ->join('parts', 'parts.id', 'maintenance_kits.kit_part_id')
+            ->select('parts.*', 'kit_part_id', DB::raw('count(kit_part_id) as total'))
+            ->get();
+
+        DB::statement("SET sql_mode=(SELECT CONCAT(@@sql_mode, ',ONLY_FULL_GROUP_BY'));");
 
         return [
-            'currency'    => $currency,
-            'brand'       => $brandAutos,
-            'tags'        => $tags,
-            'brandIds'    => $brandSelected,
-            'tagIds'      => $tagSelected,
-            'currencyIds' => $currencySelected,
-            'partCurrent' => $part,
-            'categories'  => $categories,
+            'currency'      => $currency,
+            'brand'         => $brandAutos,
+            'tags'          => $tags,
+            'brandIds'      => $brandSelected,
+            'tagIds'        => $tagSelected,
+            'currencyIds'   => $currencySelected,
+            'partCurrent'   => $part,
+            'categories'    => $categories,
+            'part_kit'      => $part_kit,
+            'part_kit_show' => $part_kit_show,
         ];
     }
 
@@ -139,6 +153,7 @@ class PartsController extends BaseController
      */
     public function destroy(Parts $part)
     {
+        MaintenanceKit::where('kit_id', $part->id)->delete();
         $part->brands ? $part->brands()->detach() : false;
         $part->tags ? $part->tags()->detach() : false;
         $part->images ? $part->images()->delete() : false;

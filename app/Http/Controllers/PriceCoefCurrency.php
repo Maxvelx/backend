@@ -8,67 +8,75 @@ use Illuminate\Support\Facades\DB;
 class PriceCoefCurrency extends Controller
 {
 
-    public static function getPriceWithCoef($part)
-    {
-        $coef = null;
-        $usd  = null;
-        $euro = null;
+    private static $coef  = null;
+    private static $usd   = null;
+    private static $euro  = null;
+    private static $coef2 = null;
 
-        if ($part->price_currency != 0 || $part->price_2 <= 0) {
+    public static function checkAndReturnPriceWithExchange($part, $price)
+    {
+        //Перевіряємо в якій валюті ціна
+        if ($part['price_currency'] == 1) {
+            $price = ceil($price * self::$usd);
+        } elseif ($part['price_currency'] == 2) {
+            $price = ceil($price * self::$euro);
+        } else {
+            //Це якщо ціна заведена в гривні, price_currency = 0
+            $price = ceil($price);
+        }
+
+        return $price;
+    }
+
+    public static function checkDependenciesQuery($part)
+    {
+        if ($part['price_currency'] != 0 || $part['price_2'] <= 0) {
             $data = DB::table('settings')->first();
             if ($data) {
-                $coef = $data->coef;
-                $usd  = $data->usd;
-                $euro = $data->euro;
+                self::$coef = $data->coef;
+                self::$usd  = $data->usd;
+                self::$euro = $data->euro;
             }
         }
 
-        $coef2 = null;
+        if (isset($part['label'])) {
+            self::$coef2 = Supplier::where('title', $part['label'])->value('coefficient');
+        }
+    }
 
-        if ($part->label) {
-            $coef2 = Supplier::where('title', $part->label)->value('coefficient');
+    public static function getPriceWithCoef($part)
+    {
+        self::checkDependenciesQuery($part);
+
+        $price = $part['price_2'] > 0 ? $part['price_2'] : $part['price_1'];
+
+        $price = self::checkAndReturnPriceWithExchange($part, $price);
+
+        if ($part['price_2'] > 0) {
+            return ceil($price);
+        }
+        if (self::$coef2 > 0) {
+            return ceil($price * self::$coef2);
         }
 
-        //Перевіряємо в якій валюті ціна
-        if ($part->price_currency == 1) {
-            $price_show = ceil($part->price_show * $usd);
-        } elseif ($part->price_currency == 2) {
-            $price_show = ceil($part->price_show * $euro);
-        } else {
-            //Це якщо ціна заведена в гривні, price_currency = 0
-            $price_show = ceil($part->price_show);
-        }
-
-        if ($part->price_2 > 0) {
-            return ceil($price_show);
-        }
-        if ($coef2 > 0) {
-            return ceil($price_show * $coef2);
-        }
-
-        return ceil($price_show * $coef);
+        return ceil($price * self::$coef);
     }
 
     public static function getPriceWithCoefWoutConvert($part)
     {
-        $coef = null;
-        if ($part->price_2 <= 0) {
-            $coef = DB::table('settings')->value('coef');
+        self::checkDependenciesQuery($part);
+
+        $price = $part['price_2'] > 0 ? $part['price_2'] : $part['price_1'];
+
+        if ($part['price_2'] > 0) {
+            return ceil($price);
         }
 
-        $coef2 = null;
-        if ($part->label) {
-            $coef2 = Supplier::where('title', $part->label)->value('coefficient');
+        if (self::$coef2 > 0) {
+            return ceil($price * self::$coef2);
         }
 
-        if ($part->price_2 > 0) {
-            return ceil($part->price_show);
-        }
-        if ($coef2 > 0) {
-            return ceil($part->price_show * $coef2);
-        }
-
-        return ceil($part->price_show * $coef);
+        return ceil($price * self::$coef);
     }
 
 }

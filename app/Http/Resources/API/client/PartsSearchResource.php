@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\API\client;
 
+use App\Models\Parts;
 use App\Models\Supplier;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -37,8 +38,8 @@ class PartsSearchResource extends JsonResource
             'qty'         => $this->quantity,
             'time'        => $time,
             'price'       => $convert === 1 || $this->is_published === 'true'
-                ? $this->priceWithCoefficient($this)
-                : $this->priceWithCoefficientWoutConvert($this),
+                ? Parts::priceWithCoefficient($this)
+                : Parts::priceWithCoefficientWoutConvert($this),
             'currency'    => $convert === 1 || $this->is_published === 'true'
                 ? '₴' : $this->currencyName,
             'canDelivery' => $canDelivery == 0 ? 'no' : 'yes',

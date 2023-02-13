@@ -24,10 +24,12 @@ class UpdatePartsRequest extends FormRequest
     public function rules()
     {
         return [
+            'parts_kit_id[]' => 'array',
+            'parts_kit_id.*' => 'nullable',
             'brands[]'       => 'array',
             'brands.*'       => 'required|exists:brand_autos,id',
             'tags[]'         => 'array',
-            'tags.*'         => 'required|exists:tags,id',
+            'tags.*'         => 'nullable|exists:tags,id',
             'brand_part'     => 'required|string',
             'num_part'       => 'required|string',
             'num_oem'        => 'nullable|string',
