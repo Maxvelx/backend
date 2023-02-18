@@ -1,33 +1,21 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-//Route::middleware( 'auth:sanctum' )->get( '/user', function( Request $request ) {
-//    return $request->user();
-//} );
-
 //auth
 Route::group( [ 'middleware' => 'api', 'prefix' => 'auth' ], static function( $router ) {
-    Route::post( 'login', [ \App\Http\Controllers\AuthController::class, 'login' ] );
-    Route::post( 'loginAdmin', [ \App\Http\Controllers\AuthController::class, 'loginAdmin' ] );
-    Route::post( 'logout', [ \App\Http\Controllers\AuthController::class, 'logout' ] );
-    Route::post( 'refresh', [ \App\Http\Controllers\AuthController::class, 'refresh' ] );
-    Route::post( 'me', [ \App\Http\Controllers\AuthController::class, 'me' ] );
+    Route::post( 'login', [ AuthController::class, 'login' ] );
+    Route::post( 'loginAdmin', [ AuthController::class, 'loginAdmin' ] );
+    Route::post( 'logout', [ AuthController::class, 'logout' ] );
+    Route::post( 'refresh', [ AuthController::class, 'refresh' ] );
+    Route::post( 'me', [ AuthController::class, 'me' ] );
     Route::post( 'edit', \App\Http\Controllers\API\client\User\EditController::class );
 } );
 //client auth personal
 Route::group( [ 'middleware' => 'jwt.auth' ], static function() {
+    Route::post('/getCounts', \App\Http\Controllers\API\client\User\IndexPersonalController::class);
     Route::post( '/getWishlist', \App\Http\Controllers\API\client\Wishlist\IndexController::class );
     Route::post( '/getWishlistCheck', \App\Http\Controllers\API\client\Wishlist\IndexCheckController::class );
     Route::post( '/wishlist/{part}', \App\Http\Controllers\API\client\Wishlist\StoreController::class );
@@ -50,7 +38,7 @@ Route::post( '/order', \App\Http\Controllers\API\client\Order\StoreController::c
 Route::post( '/vin_request', \App\Http\Controllers\API\client\VinRequest\StoreController::class );
 Route::post( '/auth/register', \App\Http\Controllers\API\client\User\RegisterController::class );
 
-//admin panel auth
+//admin panel with auth only
 Route::group( ['prefix'=>'admin','middleware' => ['jwt.auth','admin'] ], static function() {
     Route::resource( '/brands', \App\Http\Controllers\API\admin\BrandAuto\BrandAutoController::class );
     Route::resource( '/parts', \App\Http\Controllers\API\admin\Parts\PartsController::class );

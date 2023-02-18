@@ -3,21 +3,41 @@
 namespace App\Http\Controllers\API\client\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\User\UserEditRequest;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class EditController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke(UserEditRequest $request)
     {
-        $data = $request->validate([
-            'name'             => 'required|string|max:255',
-            'patronymic'       => 'required|string|max:255',
-            'lastName'         => 'required|string|max:255',
-            'address'          => 'required|max:255',
-            'delivery_company' => 'required|max:255',
-            'phone_number'     => 'required|string|unique:users,phone_number,'.auth()->user()->id,
-        ]);
-        auth()->user()->update($data);
+        $data = $request->validated();
+        $user = auth()->user();
+        try {
+            DB::beginTransaction();
+
+        if (!empty($data['image'])) {
+            $image = $data['image'];
+            $path = $image->hashName();
+            if ($user->image) {
+                Storage::disk('public')->delete($user->image);
+            }
+            Image::make($image)->resize(null, 150, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save(storage_path('app/public/image/users/'.$path));
+            $data['image'] = 'image/users/'.$path;
+        }
+
+        $user->update($data);
+
+
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            abort(500);
+        }
+
 
         return response(['message' => 'Ви успішно оновили профіль']);
     }
