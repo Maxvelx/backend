@@ -26,7 +26,7 @@ class EditController extends Controller
             Image::make($image)->resize(null, 150, function ($constraint) {
                 $constraint->aspectRatio();
             })->save(storage_path('app/public/image/users/'.$path));
-            $data['image'] = 'image/users/'.$path;
+            $data['image'] = '/image/users/'.$path;
         }
 
         $user->update($data);

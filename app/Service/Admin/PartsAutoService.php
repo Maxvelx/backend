@@ -75,8 +75,8 @@ class PartsAutoService
                     $path = $image->hashName();
                     Image::make($image)->resize(550, null, function ($constraint) {
                         $constraint->aspectRatio();
-                    })->save(storage_path('app/public/image/parts'.$path));
-                    PartsImages::firstOrCreate(['path_image' => '/image/parts'.$path, 'part_id' => $part['id']]);
+                    })->save(storage_path('app/public/image/parts/'.$path));
+                    PartsImages::firstOrCreate(['path_image' => '/image/parts/'.$path, 'part_id' => $part['id']]);
                 }
             }
 
@@ -89,8 +89,8 @@ class PartsAutoService
 
     public function update($data, $part)
     {
-        try {
-            DB::beginTransaction();
+//        try {
+//            DB::beginTransaction();
 
         $data = $this->checkEmptyAndUnsetIfNot($data);
 
@@ -121,29 +121,29 @@ class PartsAutoService
 //                ]);
 //            }
 //        }
-            if (!empty($this->imageIds)) {
-                $partImages = PartsImages::where('part_id', $part->id)->pluck('path_image');
-                foreach ($partImages as $partImage) {
-                    Storage::disk('public')->delete($partImage);
-                }
-                $part->images()->delete();
-                foreach ($this->imageIds as $image) {
-                    $path  = $image->hashName();
-                    $image = Storage::disk('public')->put('/image/parts', $image);
-                    Image::make($image)->resize(550, null, function ($constraint) {
-                        $constraint->aspectRatio();
-                    })->save(storage_path('app/public/image/parts'.$path));
-                    PartsImages::firstOrCreate([
-                        'path_image' => '/image/parts/'.$image, 'part_id' => $part->id,
-                    ]);
-                }
+        if (!empty($this->imageIds)) {
+            $partImages = PartsImages::where('part_id', $part->id)->pluck('path_image');
+            foreach ($partImages as $partImage) {
+                Storage::disk('public')->delete($partImage);
             }
-
-
-            DB::commit();
-        } catch (\Exception $exception) {
-            DB::rollBack();
-            abort(500);
+            $part->images()->delete();
+            foreach ($this->imageIds as $image) {
+                $path  = $image->hashName();
+                Image::make($image)->resize(550, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                })->save(storage_path('app/public/image/parts/'.$path));
+                PartsImages::firstOrCreate([
+                    'path_image' => '/image/parts/'.$path, 'part_id' => $part->id,
+                ]);
+            }
         }
+
+
+//            DB::commit();
+//        } catch (\Exception $exception) {
+//            DB::rollBack();
+//            abort(500);
+//        }
+//    }
     }
 }
