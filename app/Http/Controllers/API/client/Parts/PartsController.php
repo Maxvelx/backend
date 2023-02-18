@@ -16,6 +16,16 @@ class PartsController extends Controller
             ->latest()
             ->get();
 
-        return PartsShopResource::collection($parts);
+        $parts_kit = Parts::limit(5)
+            ->where('name_parts', 'LIKE', '%'.'комплект'.'%')
+            ->active()
+            ->with('iamges')
+            ->latest()
+            ->get();
+
+        return [
+            'data'      => PartsShopResource::collection($parts),
+            'parts_kit' => PartsShopResource::collection($parts_kit)
+        ];
     }
 }
