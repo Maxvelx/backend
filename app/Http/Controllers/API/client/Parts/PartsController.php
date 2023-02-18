@@ -19,7 +19,7 @@ class PartsController extends Controller
         $parts_kit = Parts::limit(5)
             ->where('name_parts', 'LIKE', '%'.'комплект'.'%')
             ->active()
-            ->with('iamges')
+            ->with('images')
             ->latest()
             ->get();
 
