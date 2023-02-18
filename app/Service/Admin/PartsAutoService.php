@@ -5,6 +5,9 @@ namespace App\Service\Admin;
 use App\Models\MaintenanceKit;
 use App\Models\Parts;
 use App\Models\PartsImages;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class PartsAutoService
 {
@@ -21,19 +24,19 @@ class PartsAutoService
 
     public function checkEmptyAndUnsetIfNot($data)
     {
-        if ( ! empty($data['brands'])) {
+        if (!empty($data['brands'])) {
             $this->brandIds = $data['brands'];
             unset($data['brands']);
         }
-        if ( ! empty($data['image'])) {
+        if (!empty($data['image'])) {
             $this->imageIds = $data['image'];
             unset($data['image']);
         }
-        if ( ! empty($data['tags'])) {
+        if (!empty($data['tags'])) {
             $this->tagsIds = $data['tags'];
             unset($data['tags']);
         }
-        if ( ! empty($data['parts_kit_id'])) {
+        if (!empty($data['parts_kit_id'])) {
             $this->kit_part_id = $data['parts_kit_id'];
             unset($data['parts_kit_id']);
         }
@@ -44,7 +47,7 @@ class PartsAutoService
     public function store($data)
     {
         try {
-            \DB::beginTransaction();
+            DB::beginTransaction();
 
             $data = $this->checkEmptyAndUnsetIfNot($data);
 
@@ -52,68 +55,95 @@ class PartsAutoService
 
             $part = Parts::firstOrCreate($data);
 
-            if ( ! empty($this->brandIds)) {
+            if (!empty($this->brandIds)) {
                 $part->brands()->attach($this->brandIds);
             }
-            if ( ! empty($this->tagsIds)) {
+            if (!empty($this->tagsIds)) {
                 $part->tags()->attach($this->tagsIds);
             }
-            if ( ! empty($this->kit_part_id)) {
+            if (!empty($this->kit_part_id)) {
                 $part->maintenanceKit()->attach($this->kit_part_id);
             }
-            if ( ! empty($this->imageIds)) {
+//            if (!empty($this->imageIds)) {
+//                foreach ($this->imageIds as $image) {
+//                    $image = Storage::disk('public')->put('/image/parts', $image);
+//                    PartsImages::firstOrCreate(['path_image' => $image, 'part_id' => $part['id']]);
+//                }
+//            }
+            if (!empty($this->imageIds)) {
                 foreach ($this->imageIds as $image) {
-                    $image = \Storage::disk('public')->put('/image/parts', $image);
-                    PartsImages::firstOrCreate(['path_image' => $image, 'part_id' => $part['id']]);
+                    $path = $image->hashName();
+                    Image::make($image)->resize(550, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save(storage_path('app/public/image/parts'.$path));
+                    PartsImages::firstOrCreate(['path_image' => '/image/parts'.$path, 'part_id' => $part['id']]);
                 }
             }
 
-            \DB::commit();
+            DB::commit();
         } catch (\Exception $exception) {
-            \DB::rollBack();
+            DB::rollBack();
             abort(500);
         }
     }
 
     public function update($data, $part)
     {
-//        try {
-//            \DB::beginTransaction();
+        try {
+            DB::beginTransaction();
 
-            $data = $this->checkEmptyAndUnsetIfNot($data);
+        $data = $this->checkEmptyAndUnsetIfNot($data);
 
-            $data['price_show'] = $this->setPriceShow($data);
+        $data['price_show'] = $this->setPriceShow($data);
 
-            $part->update($data);
+        $part->update($data);
 
-            if ( ! empty($this->brandIds)) {
-                $part->brands()->sync($this->brandIds);
-            }
-            if ( ! empty($this->tagsIds)) {
-                $part->tags()->sync($this->tagsIds);
-            }
-            if ( ! empty($this->kit_part_id)) {
-                MaintenanceKit::where('kit_id', $part->id)->delete();
-                $part->maintenanceKit()->attach($this->kit_part_id);
-            }
-            if ( ! empty($this->imageIds)) {
+        if (!empty($this->brandIds)) {
+            $part->brands()->sync($this->brandIds);
+        }
+        if (!empty($this->tagsIds)) {
+            $part->tags()->sync($this->tagsIds);
+        }
+        if (!empty($this->kit_part_id)) {
+            MaintenanceKit::where('kit_id', $part->id)->delete();
+            $part->maintenanceKit()->attach($this->kit_part_id);
+        }
+//        if (!empty($this->imageIds)) {
+//            $partImages = PartsImages::where('part_id', $part->id)->pluck('path_image');
+//            foreach ($partImages as $partImage) {
+//                Storage::disk('public')->delete($partImage);
+//            }
+//            $part->images()->delete();
+//            foreach ($this->imageIds as $image) {
+//                $image = Storage::disk('public')->put('/image/parts', $image);
+//                PartsImages::firstOrCreate([
+//                    'path_image' => $image, 'part_id' => $part->id,
+//                ]);
+//            }
+//        }
+            if (!empty($this->imageIds)) {
                 $partImages = PartsImages::where('part_id', $part->id)->pluck('path_image');
                 foreach ($partImages as $partImage) {
-                    \Storage::disk('public')->delete($partImage);
+                    Storage::disk('public')->delete($partImage);
                 }
                 $part->images()->delete();
                 foreach ($this->imageIds as $image) {
-                    $image = \Storage::disk('public')->put('/image/parts', $image);
+                    $path  = $image->hashName();
+                    $image = Storage::disk('public')->put('/image/parts', $image);
+                    Image::make($image)->resize(550, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save(storage_path('app/public/image/parts'.$path));
                     PartsImages::firstOrCreate([
-                        'path_image' => $image, 'part_id' => $part->id,
+                        'path_image' => '/image/parts/'.$image, 'part_id' => $part->id,
                     ]);
                 }
             }
 
-//            \DB::commit();
-//        } catch (\Exception $exception) {
-//            \DB::rollBack();
-//            abort(500);
-//        }
+
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            abort(500);
+        }
     }
 }
