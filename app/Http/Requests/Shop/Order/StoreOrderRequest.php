@@ -25,6 +25,7 @@ class StoreOrderRequest extends FormRequest
     public function rules()
     {
         return [
+            'total'            => 'array',
             'name'             => 'required|string|max:255',
             'email'            => 'required|string|max:255',
             'password'         => 'nullable|string|max:255',

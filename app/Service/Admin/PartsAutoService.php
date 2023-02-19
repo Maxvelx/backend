@@ -89,8 +89,8 @@ class PartsAutoService
 
     public function update($data, $part)
     {
-//        try {
-//            DB::beginTransaction();
+        try {
+            DB::beginTransaction();
 
         $data = $this->checkEmptyAndUnsetIfNot($data);
 
@@ -108,19 +108,7 @@ class PartsAutoService
             MaintenanceKit::where('kit_id', $part->id)->delete();
             $part->maintenanceKit()->attach($this->kit_part_id);
         }
-//        if (!empty($this->imageIds)) {
-//            $partImages = PartsImages::where('part_id', $part->id)->pluck('path_image');
-//            foreach ($partImages as $partImage) {
-//                Storage::disk('public')->delete($partImage);
-//            }
-//            $part->images()->delete();
-//            foreach ($this->imageIds as $image) {
-//                $image = Storage::disk('public')->put('/image/parts', $image);
-//                PartsImages::firstOrCreate([
-//                    'path_image' => $image, 'part_id' => $part->id,
-//                ]);
-//            }
-//        }
+
         if (!empty($this->imageIds)) {
             $partImages = PartsImages::where('part_id', $part->id)->pluck('path_image');
             foreach ($partImages as $partImage) {
@@ -138,12 +126,10 @@ class PartsAutoService
             }
         }
 
-
-//            DB::commit();
-//        } catch (\Exception $exception) {
-//            DB::rollBack();
-//            abort(500);
-//        }
-//    }
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            abort(500);
+        }
     }
 }
